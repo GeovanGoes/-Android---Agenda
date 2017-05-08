@@ -7,44 +7,52 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.getbase.floatingactionbutton.FloatingActionButton;
-import com.getbase.floatingactionbutton.FloatingActionsMenu;
 import com.prolificinteractive.materialcalendarview.CalendarDay;
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
 import com.prolificinteractive.materialcalendarview.OnDateSelectedListener;
 
+import java.util.Date;
+import java.util.List;
+
 import br.comm.a4kontrol.ponto.R;
 import br.comm.a4kontrol.ponto.dao.Dao;
+import br.comm.a4kontrol.ponto.helper.DataHelper;
+import br.comm.a4kontrol.ponto.modelo.Feriado;
+import br.comm.a4kontrol.ponto.modelo.Lancamento;
 
 public class Inicio extends AppCompatActivity {
 
     private Dao dao;
     private CalendarDay dataSelecionada = null;
+    private TextView lancamentos;
+    private TextView lancamento1;
+    private TextView lancamento2;
+    private TextView lancamento3;
+    private TextView lancamento4;
+    private Button verMais;
+    private TextView status;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        dataSelecionada = new CalendarDay();
+
+        int day = dataSelecionada.getDay();
+        int month = dataSelecionada.getMonth();
+        int year = dataSelecionada.getYear();
 
         dao = new Dao(this);
 
         setContentView(R.layout.activity_inicio);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
-        /*FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.botao_adicionar_lancammento);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        //.setAction("Action", null).show();
-                Intent adicionar = new Intent(Inicio.this, AdicionarLancamento.class);
-                adicionar.putExtra("data", dataSelecionada);
-                startActivity(adicionar);
-            }
-        });*/
 
         FloatingActionButton marcacaoInstantanea = (FloatingActionButton) findViewById(R.id.marcacao_instantanea);
         marcacaoInstantanea.setOnClickListener(new View.OnClickListener() {
@@ -63,12 +71,12 @@ public class Inicio extends AppCompatActivity {
         });
 
         MaterialCalendarView mcv = (MaterialCalendarView) findViewById(R.id.calendarView);
-
+        mcv.setDateSelected(new Date(), true);
         mcv.setOnDateChangedListener(new OnDateSelectedListener() {
             @Override
             public void onDateSelected(@NonNull MaterialCalendarView widget, @NonNull CalendarDay date, boolean selected) {
                 Toast.makeText(Inicio.this, date.toString(), Toast.LENGTH_SHORT).show();
-                trocarDadosDoDia(date);
+                setDadosDoDiaNaView(date);
             }
         });
 
@@ -76,34 +84,59 @@ public class Inicio extends AppCompatActivity {
         feriadoFolga.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                marcarDataComoFeriado(dataSelecionada);
+                if (!dao.ehFeriado(DataHelper.formatarData(dataSelecionada)))
+                    marcarDataComoFeriado(dataSelecionada);
+                else
+                    desmarcarComoFeriado(dataSelecionada);
             }
         });
     }
 
+    private void desmarcarComoFeriado(CalendarDay dataSelecionada) {
+        dao.deletar(dao.getFeriado(DataHelper.formatarData(dataSelecionada)));
+    }
+
+    private void inicializarComponentesDaView() {
+/*        lancamentos;
+        lancamento1;
+        lancamento2;
+        lancamento3;
+        lancamento4;
+        verMais;
+        status;*/
+    }
+
+    private boolean hojeEhFeriado() {
+        Date hoje = new Date();
+        return dao.ehFeriado(DataHelper.formatarData(hoje));
+    }
+
     private void marcarDataComoFeriado(CalendarDay day) {
+        Feriado feriado = new Feriado();
+        feriado.setData(DataHelper.formatarData(day));
+        dao.inserirFeriado(feriado);
+        ocultarCamposDaView();
+    }
+
+    private void ocultarCamposDaView() {
 
     }
 
-    private void trocarDadosDoDia(CalendarDay date) {
-
+    private void setDadosDoDiaNaView(CalendarDay date) {
+        String data = DataHelper.formatarData(date);
+        List<Lancamento> lancamentosDoDia = dao.getLancamentosDoDia(data);
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_inicio, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;
         }

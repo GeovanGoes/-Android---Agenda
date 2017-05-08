@@ -82,9 +82,12 @@ public class Dao extends SQLiteOpenHelper {
         return lancamentos;
     }
 
-    public List<Feriado> getFeriados(){
+    public List<Feriado> getFeriados(String data){
 
-        String sql = "SELECT * FROM " + TABELA_FERIADOS + ";";
+        String sql = "SELECT * FROM " + TABELA_FERIADOS + " where data = "+data+";";
+
+        if (data == null)
+            sql = "SELECT * FROM " + TABELA_FERIADOS + ";";
 
         Cursor cursor = getReadableDatabase().rawQuery(sql, null);
 
@@ -93,9 +96,9 @@ public class Dao extends SQLiteOpenHelper {
         while (cursor.moveToNext()){
 
             int id = cursor.getInt(cursor.getColumnIndex("id"));
-            String data = cursor.getString(cursor.getColumnIndex("data"));
+            String date = cursor.getString(cursor.getColumnIndex("data"));
 
-            Feriado feriado = new Feriado(id, data);
+            Feriado feriado = new Feriado(id, date);
 
             feriados.add(feriado);
         }
@@ -126,5 +129,37 @@ public class Dao extends SQLiteOpenHelper {
         dados.put("data", lancamento.getData());
         dados.put("horario", lancamento.getHorario());
         return dados;
+    }
+
+    public void inserirFeriado(Feriado feriado){
+        SQLiteDatabase db = getWritableDatabase();
+        db.insert(TABELA_FERIADOS, null, getContentValues(feriado));
+    }
+
+    private ContentValues getContentValues(Feriado feriado) {
+        ContentValues dados = new ContentValues();
+        dados.put("data", feriado.getData());
+        return dados;
+    }
+
+    public void inserirLancamento(Lancamento lancamento){
+        SQLiteDatabase db = getWritableDatabase();
+        db.insert(TABELA_LANCAMENTOS, null, getContentValues(lancamento));
+    }
+
+    public Feriado getFeriado(String data){
+        List<Feriado> feriados = getFeriados(data);
+        if (feriados != null){
+            return feriados.get(0);
+        }else{
+            return null;
+        }
+    }
+
+    public boolean ehFeriado(String data) {
+        if (getFeriado(data) == null){
+            return false;
+        }
+        return true;
     }
 }

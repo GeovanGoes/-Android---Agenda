@@ -12,6 +12,9 @@ public class Lancamento implements Serializable{
     private String horario;
     private String data;
 
+    public Lancamento() {
+    }
+
     public Lancamento(int id, String horario, String data) {
         this.id = id;
         this.horario = horario;

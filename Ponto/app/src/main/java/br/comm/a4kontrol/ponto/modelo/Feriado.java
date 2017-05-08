@@ -8,6 +8,9 @@ public class Feriado {
     private int id;
     private String data;
 
+    public Feriado() {
+    }
+
     public Feriado(int id, String data) {
         this.id = id;
         this.data = data;

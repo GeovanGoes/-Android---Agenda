@@ -60,7 +60,7 @@ public class LancamentoDao extends DAO<Lancamento> {
 
     @Override
     public String getParamsName() {
-        return "id = ?";
+        return "data = ?";
     }
 
     @Override

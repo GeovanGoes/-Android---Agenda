@@ -4,7 +4,6 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteOpenHelper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,7 +14,6 @@ import br.comm.a4kontrol.ponto.modelo.Feriado;
 /**
  * Created by geovan.goes on 09/05/2017.
  */
-
 public class FeriadoDao extends DAO<Feriado> {
 
     public FeriadoDao(Context context) {

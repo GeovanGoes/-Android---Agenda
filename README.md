@@ -13,3 +13,5 @@ R0017 - Excluir e editar lancamentos do dia
 R0018 - Tela de configurações  
 R0019 - Status  
 R0020 - Tela de relatórios  
+R0021 - Tela de primeiros passos  
+R0022 - Tela SOBRE  

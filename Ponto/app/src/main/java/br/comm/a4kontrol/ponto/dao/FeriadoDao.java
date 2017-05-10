@@ -18,10 +18,8 @@ import br.comm.a4kontrol.ponto.modelo.Feriado;
 
 public class FeriadoDao extends DAO<Feriado> {
 
-    private static final String TABELA_FERIADOS = "Feriados";
-
     public FeriadoDao(Context context) {
-        super(context);
+        super(context,"Feriados");
     }
 
     @Override
@@ -33,10 +31,10 @@ public class FeriadoDao extends DAO<Feriado> {
 
     @Override
     public String prepareConsultQuery(String data) {
-        String sql = "SELECT * FROM " + TABELA_FERIADOS + " where data = '"+data+"';";
+        String sql = "SELECT * FROM " + getTableName() + " where data = '"+data+"';";
 
         if (data == null)
-            sql = "SELECT * FROM " + TABELA_FERIADOS + ";";
+            sql = "SELECT * FROM " + getTableName() + ";";
 
         return sql;
     }
@@ -59,11 +57,6 @@ public class FeriadoDao extends DAO<Feriado> {
     }
 
     @Override
-    public String getTableName() {
-        return TABELA_FERIADOS;
-    }
-
-    @Override
     public String getParamsName() {
         return "data = ?";
     }
@@ -79,14 +72,14 @@ public class FeriadoDao extends DAO<Feriado> {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        String sql = "DROP TABLE IF EXISTS "+ TABELA_FERIADOS;
+        String sql = "DROP TABLE IF EXISTS "+ getTableName();
         db.execSQL(sql);
         onCreate(db);
     }
 
     private String createTabelFeriados(){
         String createTableFeriados = "CREATE TABLE " +
-                TABELA_FERIADOS +
+                getTableName() +
                 " (" +
                 "id INTEGER PRIMARY KEY," +
                 "data TEXT NOT NULL);";

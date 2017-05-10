@@ -18,8 +18,11 @@ import br.comm.a4kontrol.ponto.util.Constants;
 
 public abstract class DAO<T> extends SQLiteOpenHelper implements AbstractDAO<T>{
 
-    public DAO(Context context) {
+    private String TABLE_NAME;
+
+    public DAO(Context context, String tableName) {
         super(context, Constants.DATABASE_NAME, null, Constants.DATABASE_VERSION);
+        TABLE_NAME = tableName;
     }
 
     @Override
@@ -62,13 +65,15 @@ public abstract class DAO<T> extends SQLiteOpenHelper implements AbstractDAO<T>{
         // TODO: Implementar caso seja necessário
     }
 
+    protected String getTableName(){
+        return this.TABLE_NAME;
+    }
+
     public abstract ContentValues getContentValues(T object);
 
     public abstract String prepareConsultQuery(String param);
 
     public abstract List<T> convertCursorToObject(Cursor cursor);
-
-    public abstract  String getTableName();
 
     public abstract String getParamsName();
 }

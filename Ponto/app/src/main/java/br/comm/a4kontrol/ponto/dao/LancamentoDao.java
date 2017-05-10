@@ -16,10 +16,8 @@ import br.comm.a4kontrol.ponto.modelo.Lancamento;
  */
 public class LancamentoDao extends DAO<Lancamento> {
 
-    private static final String TABELA_LANCAMENTOS = "Lancamentos";
-
     public LancamentoDao(Context context) {
-        super(context);
+        super(context, "Lancamentos");
     }
 
     @Override
@@ -32,10 +30,10 @@ public class LancamentoDao extends DAO<Lancamento> {
 
     @Override
     public String prepareConsultQuery(String data) {
-        String sql = "SELECT * FROM "+TABELA_LANCAMENTOS+" where data = '" + data +"';";
+        String sql = "SELECT * FROM "+getTableName()+" where data = '" + data +"';";
 
         if (data == null){
-            sql = "SELECT * FROM "+TABELA_LANCAMENTOS+";";
+            sql = "SELECT * FROM "+getTableName()+";";
         }
         return sql;
     }
@@ -61,11 +59,6 @@ public class LancamentoDao extends DAO<Lancamento> {
     }
 
     @Override
-    public String getTableName() {
-        return TABELA_LANCAMENTOS;
-    }
-
-    @Override
     public String getParamsName() {
         return "id = ?";
     }
@@ -81,7 +74,7 @@ public class LancamentoDao extends DAO<Lancamento> {
 
     private String createTabelLancamentos(){
         String createTable = "CREATE TABLE "+
-                TABELA_LANCAMENTOS+
+                getTableName()+
                 " (" +
                 "id INTEGER PRIMARY KEY," +
                 "horario TEXT NOT NULL, " +
@@ -91,7 +84,7 @@ public class LancamentoDao extends DAO<Lancamento> {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        String sql = "DROP TABLE IF EXISTS "+ TABELA_LANCAMENTOS;
+        String sql = "DROP TABLE IF EXISTS "+ getTableName();
         db.execSQL(sql);
         onCreate(db);
     }

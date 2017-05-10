@@ -40,7 +40,8 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Lançamentos"/>
+            android:text="Lançamentos:"
+            android:id="@+id/text_lancammentos" />
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -49,7 +50,6 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="08:00"
                 android:id="@+id/resumo_lancammento1"/>
 
             <View
@@ -60,7 +60,6 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="12:00"
                 android:id="@+id/resumo_lancammento2"/>
 
             <View
@@ -71,7 +70,6 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="13:00"
                 android:id="@+id/resumo_lancammento3"/>
 
             <View
@@ -82,7 +80,6 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="18:00"
                 android:id="@+id/resumo_lancammento4"/>
 
 
@@ -92,7 +89,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Ver mais..."
-            style="@style/Widget.AppCompat.Button.Borderless"/>
+            style="@style/Widget.AppCompat.Button.Borderless"
+            android:id="@+id/btn_ver_mais"/>
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -101,10 +99,12 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Status:"/>
+                android:text="Status:"
+                android:id="@+id/label_status"/>
             <ImageView
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:id="@+id/imgView_status"/>
 
         </LinearLayout>
 

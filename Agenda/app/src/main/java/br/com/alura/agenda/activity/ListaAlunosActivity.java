@@ -21,8 +21,11 @@ import java.util.List;
 
 import br.com.alura.agenda.R;
 import br.com.alura.agenda.adapter.ListaAlunosAdapter;
+import br.com.alura.agenda.client.WebClient;
+import br.com.alura.agenda.converter.AlunoConverter;
 import br.com.alura.agenda.dao.AlunoDAO;
 import br.com.alura.agenda.modelo.Aluno;
+import br.com.alura.agenda.task.EnviaAlunosTask;
 
 import static br.com.alura.agenda.R.id.lista;
 
@@ -140,9 +143,9 @@ public class ListaAlunosActivity extends AppCompatActivity {
         switch (item.getItemId()){
 
             case R.id.menu_enviar_notas:
-                Toast.makeText(this, "Enviando notas...", Toast.LENGTH_SHORT).show();
+                EnviaAlunosTask enviaAlunosTask = new EnviaAlunosTask(this);
+                enviaAlunosTask.execute();
                 break;
-
         }
 
         return super.onOptionsItemSelected(item);

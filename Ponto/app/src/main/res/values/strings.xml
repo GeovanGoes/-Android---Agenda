@@ -1,4 +1,11 @@
 <resources>
     <string name="app_name">Ponto</string>
     <string name="action_settings">Settings</string>
+    <string name="Titulo.confirmacao_marcacao_feriado">"Tem certeza que deseja marcar essa data com um feriado?"</string>
+    <string name="Mensagem_confirmacao_marcacao_feriado">Fazendo isso você removerá desta data todos os lançamentos de horas.</string>
+    <string name="Label_marcar">Marcar</string>
+    <string name="Label_cancelar">Cancelar</string>
+    <string name="Titulo_alerta_lancamento_feriado">Você não pode fazer isso</string>
+    <string name="Mensagem_alerta_lancamento_feriado">Não é possível lançar horas em um feriado/folga.</string>
+    <string name="Label_Ok">Ok</string>
 </resources>

@@ -1,8 +1,6 @@
 package br.comm.a4kontrol.ponto.activities;
 
-import android.app.AlertDialog;
 import android.app.TimePickerDialog;
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -31,9 +29,13 @@ import br.comm.a4kontrol.ponto.R;
 import br.comm.a4kontrol.ponto.dao.FeriadoDao;
 import br.comm.a4kontrol.ponto.dao.LancamentoDao;
 import br.comm.a4kontrol.ponto.helper.DataHelper;
+import br.comm.a4kontrol.ponto.helper.DialogHelper;
+import br.comm.a4kontrol.ponto.helper.DialogIcon;
 import br.comm.a4kontrol.ponto.helper.LogHelper;
 import br.comm.a4kontrol.ponto.modelo.Feriado;
 import br.comm.a4kontrol.ponto.modelo.Lancamento;
+import br.comm.a4kontrol.ponto.util.QuestionDialogCallback;
+import br.comm.a4kontrol.ponto.util.SingleActionDialogCallback;
 
 public class Inicio extends AppCompatActivity {
 
@@ -68,6 +70,11 @@ public class Inicio extends AppCompatActivity {
         findViews();
 
         inicializarView();
+    }
+
+    private void setDataSelecionada(CalendarDay dataSelecionada) {
+        this.dataSelecionada = dataSelecionada;
+        alterarEstadoDaView(dataSelecionada);
     }
 
     @Override
@@ -128,22 +135,22 @@ public class Inicio extends AppCompatActivity {
 
                         if(lancamentosList.size()>0){
 
-                            AlertDialog.Builder builder = new AlertDialog.Builder(Inicio.this);
-                            builder.setTitle("Tem certeza que deseja marcar essa data com um feriado?");
-                            builder.setIcon(android.R.drawable.btn_star_big_on);
-                            builder.setMessage("Fazendo isso você removerá desta data todos os lançamentos de horas.");
-
-                            builder.setPositiveButton("Marcar", new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int id) {
-                                    marcarDataComoFeriado(dataSelecionada);
-                                }
-                            });
-                            builder.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int id) {
-                                }
-                            });
-                            AlertDialog dialog = builder.create();
-                            dialog.show();
+                            DialogHelper.showQuestionDialog(Inicio.this,
+                                    R.string.Titulo_confirmacao_marcacao_feriado,
+                                    R.string.Mensagem_confirmacao_marcacao_feriado,
+                                    DialogIcon.INFO,
+                                    R.string.Label_marcar,
+                                    R.string.Label_cancelar,
+                                    new QuestionDialogCallback() {
+                                        @Override
+                                        public void escolha(boolean escolha) {
+                                            if (escolha){
+                                                marcarDataComoFeriado(dataSelecionada);
+                                            } else {
+                                                feriadoFolga.setChecked(false);
+                                            }
+                                        }
+                                    });
                         } else {
                             marcarDataComoFeriado(dataSelecionada);
                         }
@@ -165,8 +172,7 @@ public class Inicio extends AppCompatActivity {
         materialCalendarView.setOnDateChangedListener(new OnDateSelectedListener() {
             @Override
             public void onDateSelected(@NonNull MaterialCalendarView widget, @NonNull CalendarDay date, boolean selected) {
-                dataSelecionada = date;
-                alterarEstadoDaView(dataSelecionada);
+                setDataSelecionada(date);
             }
         });
     }
@@ -178,8 +184,9 @@ public class Inicio extends AppCompatActivity {
         marcacaoInstantanea.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                setDataSelecionada(CalendarDay.today());
                 if (ehFeriado(dataSelecionada)){
-                    Toast.makeText(Inicio.this, "Você não pode lancar horas num feriado ou folga.", Toast.LENGTH_SHORT).show();
+                    mostrarMensagemDeValidacaoParaLancamentoDeHorasNoFeriado();
                 } else {
                     DateTime hoje = DateTime.now();
                     String horario = hoje.getHourOfDay() + ":" + hoje.getMinuteOfHour();
@@ -188,8 +195,7 @@ public class Inicio extends AppCompatActivity {
                     materialCalendarView.clearSelection();
                     materialCalendarView.setDateSelected(hoje.toDate(),true);
 
-                    dataSelecionada = CalendarDay.today();
-                    alterarEstadoDaView(dataSelecionada);
+                    setDataSelecionada(CalendarDay.today());
                 }
                 floatingActionsMenu.collapse();
             }
@@ -210,11 +216,20 @@ public class Inicio extends AppCompatActivity {
                     },now.getHourOfDay(), now.getMinuteOfHour(), true);
                     timePickerDialog.show();
                 } else {
-                    Toast.makeText(Inicio.this, "Você não pode lancar horas num feriado ou folga.", Toast.LENGTH_SHORT).show();
+                    mostrarMensagemDeValidacaoParaLancamentoDeHorasNoFeriado();
                 }
                 floatingActionsMenu.collapse();
             }
         });
+    }
+
+    private void mostrarMensagemDeValidacaoParaLancamentoDeHorasNoFeriado(){
+        DialogHelper.showMessageDialog(Inicio.this,
+                R.string.Titulo_alerta_lancamento_feriado,
+                R.string.Mensagem_alerta_lancamento_feriado,
+                DialogIcon.ERROR,
+                R.string.Label_Ok,
+                null);
     }
 
     /**

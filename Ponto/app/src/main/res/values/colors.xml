@@ -11,4 +11,16 @@
     <color name="white_pressed">#f1f1f1</color>
     <color name="pink">#e91e63</color>
     <color name="pink_pressed">#ec407a</color>
+    <color name="back_warning">#FCF8E3</color>
+    <color name="back_sucesso">#DFF0D8</color>
+    <color name="back_info">#D9EDF7</color>
+    <color name="back_erro">#F2DEDE</color>
+    <color name="strong_sucesso">#3C763D</color>
+    <color name="strong_info">#3B7795</color>
+    <color name="strong_warning">#8A6D3B</color>
+    <color name="strong_erro">#A94442</color>
+    <color name="normal_sucesso">#3C763D</color>
+    <color name="normal_info">#31708F</color>
+    <color name="normal_warning">#917545</color>
+    <color name="normal_erro">#A94442</color>
 </resources>

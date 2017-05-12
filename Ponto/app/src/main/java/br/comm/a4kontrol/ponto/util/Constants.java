@@ -7,5 +7,8 @@ package br.comm.a4kontrol.ponto.util;
 public class Constants {
 
     public static final String DATABASE_NAME = "PONTO";
-    public static final int DATABASE_VERSION = 9;
-;}
+    public static final int DATABASE_VERSION = 11;
+    public static final String CONFIGURACAO_INICIO_DO_CICLO = "INICIO_DO_CICLO";
+    public static final String CONFIGURACAO_PERIODO_RELATORIO = "PERIODO_RELATORIO";
+
+}

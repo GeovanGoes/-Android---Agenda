@@ -8,4 +8,7 @@
     <string name="Titulo_alerta_lancamento_feriado">Você não pode fazer isso</string>
     <string name="Mensagem_alerta_lancamento_feriado">Não é possível lançar horas em um feriado/folga.</string>
     <string name="Label_Ok">Ok</string>
+    <string name="configuracoes">Configurações</string>
+    <string name="Titulo_sucesso">Sucesso!</string>
+    <string name="Mensagem_configuracoes_salvas_com_sucesso">Configurações salvas!</string>
 </resources>

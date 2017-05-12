@@ -1,6 +1,7 @@
 package br.comm.a4kontrol.ponto.activities;
 
 import android.app.TimePickerDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -12,7 +13,6 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.TextView;
 import android.widget.TimePicker;
-import android.widget.Toast;
 
 import com.getbase.floatingactionbutton.FloatingActionButton;
 import com.getbase.floatingactionbutton.FloatingActionsMenu;
@@ -35,7 +35,6 @@ import br.comm.a4kontrol.ponto.helper.LogHelper;
 import br.comm.a4kontrol.ponto.modelo.Feriado;
 import br.comm.a4kontrol.ponto.modelo.Lancamento;
 import br.comm.a4kontrol.ponto.util.QuestionDialogCallback;
-import br.comm.a4kontrol.ponto.util.SingleActionDialogCallback;
 
 public class Inicio extends AppCompatActivity {
 
@@ -292,7 +291,8 @@ public class Inicio extends AppCompatActivity {
 
         int id = item.getItemId();
         if (id == R.id.action_settings) {
-            return true;
+            Intent settingsIntent = new Intent(this, Configuracoes.class);
+            startActivity(settingsIntent);
         }
         return super.onOptionsItemSelected(item);
     }

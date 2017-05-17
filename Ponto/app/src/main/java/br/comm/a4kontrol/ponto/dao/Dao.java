@@ -5,9 +5,14 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.support.v4.app.NotificationBuilderWithBuilderAccessor;
+import android.util.Log;
+
+import org.reflections.Reflections;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import br.comm.a4kontrol.ponto.helper.LogHelper;
 import br.comm.a4kontrol.ponto.util.Constants;
@@ -18,11 +23,45 @@ import br.comm.a4kontrol.ponto.util.Constants;
 
 public abstract class DAO<T> extends SQLiteOpenHelper implements AbstractDAO<T>{
 
+    private Context context;
     private String TABLE_NAME;
 
     public DAO(Context context, String tableName) {
         super(context, Constants.DATABASE_NAME, null, Constants.DATABASE_VERSION);
+        this.context = context;
         TABLE_NAME = tableName;
+    }
+
+    @Override
+    public void onCreate(SQLiteDatabase db) {
+        Reflections reflections = new Reflections("br.comm.a4kontrol.ponto");
+        Set<Class<? extends Object>> classes = reflections.getSubTypesOf(Object.class);
+        for (Class<? extends Object> clazz : classes){
+            /*                DAO dao = clazz.newInstance();
+                            String query = dao.createTableQuery();
+                            Log.d("",query);*/
+
+            Log.d("","");
+
+            Log.d("","");
+        }
+    }
+
+    @Override
+    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        ClassLoader.
+        Reflections reflections = new Reflections("br.comm.a4kontrol.ponto");
+            Set<Class<? extends Object>> classes = reflections.getSubTypesOf(Object.class);
+        for (Class<? extends Object> clazz : classes){
+            /*DAO dao = clazz.newInstance();
+            String query = dao.updateTableQuery();
+            Log.d("",query);*/
+
+            Log.d("","");
+
+            Log.d("","");
+        }
+        onCreate(db);
     }
 
     @Override
@@ -76,4 +115,8 @@ public abstract class DAO<T> extends SQLiteOpenHelper implements AbstractDAO<T>{
     public abstract List<T> convertCursorToObject(Cursor cursor);
 
     public abstract String getParamsName();
+
+    public abstract String createTableQuery();
+
+    public abstract String updateTableQuery();
 }

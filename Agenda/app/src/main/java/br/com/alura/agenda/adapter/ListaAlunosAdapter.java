@@ -69,6 +69,15 @@ public class ListaAlunosAdapter extends BaseAdapter {
         ImageView foto = (ImageView) view.findViewById(R.id.item_foto);
         FormularioHelper.carregaImagem(aluno.getCaminhoFoto(), foto);
 
+        TextView endereco = (TextView) view.findViewById(R.id.item_endereco);
+        TextView site = (TextView) view.findViewById(R.id.item_site);
+        if (endereco != null){
+            endereco.setText(aluno.getEndereco());
+        }
+        if (site != null){
+            site.setText(aluno.getSite());
+        }
+
         return view;
     }
 }

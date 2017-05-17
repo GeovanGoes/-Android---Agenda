@@ -140,11 +140,16 @@ public class ListaAlunosActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
-        switch (item.getItemId()){
-
+        switch (item.getItemId())
+        {
             case R.id.menu_enviar_notas:
                 EnviaAlunosTask enviaAlunosTask = new EnviaAlunosTask(this);
                 enviaAlunosTask.execute();
+                break;
+
+            case R.id.menu_baixar_provas:
+                Intent intent = new Intent(this, ProvasActivity.class);
+                startActivity(intent);
                 break;
         }
 

@@ -10,6 +10,7 @@ import java.util.List;
 
 import br.comm.a4kontrol.ponto.helper.LogHelper;
 import br.comm.a4kontrol.ponto.modelo.Feriado;
+import br.comm.a4kontrol.ponto.util.Constants;
 
 /**
  * Created by geovan.goes on 09/05/2017.
@@ -17,7 +18,7 @@ import br.comm.a4kontrol.ponto.modelo.Feriado;
 public class FeriadoDao extends DAO<Feriado> {
 
     public FeriadoDao(Context context) {
-        super(context,"Feriados");
+        super(context, Constants.TABELA_FERIADO);
     }
 
     @Override
@@ -60,27 +61,17 @@ public class FeriadoDao extends DAO<Feriado> {
     }
 
     @Override
-    public void onCreate(SQLiteDatabase db) {
-        try {
-            db.execSQL(createTabelFeriados());
-        }catch (Exception e){
-            LogHelper.error(this, e, null);
-        }
-    }
-
-    @Override
-    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        String sql = "DROP TABLE IF EXISTS "+ getTableName();
-        db.execSQL(sql);
-        onCreate(db);
-    }
-
-    private String createTabelFeriados(){
+    public String createTableQuery() {
         String createTableFeriados = "CREATE TABLE " +
                 getTableName() +
                 " (" +
                 "id INTEGER PRIMARY KEY," +
                 "data TEXT NOT NULL);";
         return createTableFeriados;
+    }
+
+    @Override
+    public String updateTableQuery() {
+        return "DROP TABLE IF EXISTS "+ getTableName();
     }
 }

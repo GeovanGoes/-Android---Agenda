@@ -30,4 +30,5 @@ dependencies {
     testCompile 'junit:junit:4.12'
     compile 'joda-time:joda-time:2.9.4'
     compile 'com.getbase:floatingactionbutton:1.10.1'
+    compile group: 'org.reflections', name: 'reflections', version: '0.9.10'
 }

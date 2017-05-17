@@ -10,6 +10,7 @@ import java.util.List;
 
 import br.comm.a4kontrol.ponto.helper.LogHelper;
 import br.comm.a4kontrol.ponto.modelo.Lancamento;
+import br.comm.a4kontrol.ponto.util.Constants;
 
 /**
  * Created by geovan.goes on 08/05/2017.
@@ -17,7 +18,7 @@ import br.comm.a4kontrol.ponto.modelo.Lancamento;
 public class LancamentoDao extends DAO<Lancamento> {
 
     public LancamentoDao(Context context) {
-        super(context, "Lancamentos");
+        super(context, Constants.TABELA_LANCAMENTO);
     }
 
     @Override
@@ -64,15 +65,7 @@ public class LancamentoDao extends DAO<Lancamento> {
     }
 
     @Override
-    public void onCreate(SQLiteDatabase db) {
-        try {
-            db.execSQL(createTabelLancamentos());
-        }catch (Exception e){
-            LogHelper.error(this, e, null);
-        }
-    }
-
-    private String createTabelLancamentos(){
+    public String createTableQuery() {
         String createTable = "CREATE TABLE "+
                 getTableName()+
                 " (" +
@@ -83,9 +76,7 @@ public class LancamentoDao extends DAO<Lancamento> {
     }
 
     @Override
-    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        String sql = "DROP TABLE IF EXISTS "+ getTableName();
-        db.execSQL(sql);
-        onCreate(db);
+    public String updateTableQuery() {
+        return "DROP TABLE IF EXISTS "+ getTableName();
     }
 }

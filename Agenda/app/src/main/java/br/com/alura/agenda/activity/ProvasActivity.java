@@ -47,6 +47,7 @@ public class ProvasActivity extends AppCompatActivity {
             detalhesProvaFragment.setArguments(params);
 
             tx.replace(R.id.frame_principal,detalhesProvaFragment);
+            tx.addToBackStack(null);
             tx.commit();
         }else{
             DetalhesProvaFragment detalhesFragment = (DetalhesProvaFragment) fragmentManager.findFragmentById(R.id.frame_secundario);

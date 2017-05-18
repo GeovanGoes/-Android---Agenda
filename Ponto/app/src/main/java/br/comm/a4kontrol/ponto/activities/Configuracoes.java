@@ -20,7 +20,9 @@ import java.util.List;
 
 import br.comm.a4kontrol.ponto.R;
 import br.comm.a4kontrol.ponto.dao.ConfiguracaoDao;
+import br.comm.a4kontrol.ponto.dao.DAOChain;
 import br.comm.a4kontrol.ponto.enumeration.PeriodosEnum;
+import br.comm.a4kontrol.ponto.exception.DAOInexistenteException;
 import br.comm.a4kontrol.ponto.helper.DialogHelper;
 import br.comm.a4kontrol.ponto.helper.DialogIcon;
 import br.comm.a4kontrol.ponto.modelo.Configuracao;
@@ -40,7 +42,12 @@ public class Configuracoes extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_configuracoes);
 
-        configuracaoDao = new ConfiguracaoDao(this);
+        try {
+            configuracaoDao = (ConfiguracaoDao) DAOChain.getDAO(Configuracao.class);
+        } catch (DAOInexistenteException e) {
+            e.printStackTrace();
+        }
+
         textViewInicioCiclo = (TextView) findViewById(R.id.Text_inicio_ciclo);
         List<Configuracao> listaConfiguracao = configuracaoDao.lista(Constants.CONFIGURACAO_INICIO_DO_CICLO);
         if (listaConfiguracao.size() > 0){
@@ -53,6 +60,21 @@ public class Configuracoes extends AppCompatActivity {
         }
 
         spinnerPeriodo = (Spinner) findViewById(R.id.spinner_periodo);
+
+        List<String> itensSpinner = new ArrayList<String>();
+        itensSpinner.add(PeriodosEnum.Mensal.name());
+        itensSpinner.add(PeriodosEnum.Bimestral.name());
+        itensSpinner.add(PeriodosEnum.Trimestral.name());
+        itensSpinner.add(PeriodosEnum.Quadrimestral.name());
+        itensSpinner.add(PeriodosEnum.Quimestral.name());
+        itensSpinner.add(PeriodosEnum.Semestral.name());
+        itensSpinner.add(PeriodosEnum.Anual.name());
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(getApplicationContext(), android.R.layout.simple_spinner_item, itensSpinner);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerPeriodo.setAdapter(adapter);
+
+
         listaConfiguracao = configuracaoDao.lista(Constants.CONFIGURACAO_PERIODO_RELATORIO);
         if (listaConfiguracao.size() > 0){
             Configuracao configuracao = listaConfiguracao.get(0);
@@ -68,18 +90,7 @@ public class Configuracoes extends AppCompatActivity {
             spinnerPeriodo.setSelection(position);
         }
 
-        List<String> itensSpinner = new ArrayList<String>();
-        itensSpinner.add(PeriodosEnum.Mensal.name());
-        itensSpinner.add(PeriodosEnum.Bimestral.name());
-        itensSpinner.add(PeriodosEnum.Trimestral.name());
-        itensSpinner.add(PeriodosEnum.Quadrimestral.name());
-        itensSpinner.add(PeriodosEnum.Quimestral.name());
-        itensSpinner.add(PeriodosEnum.Semestral.name());
-        itensSpinner.add(PeriodosEnum.Anual.name());
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(getApplicationContext(), android.R.layout.simple_spinner_item, itensSpinner);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinnerPeriodo.setAdapter(adapter);
 
         ImageView imageCalendar = (ImageView) findViewById(R.id.image_calendar);
 
@@ -112,13 +123,13 @@ public class Configuracoes extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.menu_configuracoes_ok){
             if (data != null && !data.equals("")) {
-                configuracaoDao.insere(new Configuracao(Constants.CONFIGURACAO_INICIO_DO_CICLO,data));
+                configuracaoDao.insereOuAtualiza(new Configuracao(Constants.CONFIGURACAO_INICIO_DO_CICLO,data));
             }
 
             String selectedItem = (String) spinnerPeriodo.getSelectedItem();
 
             if (selectedItem != null){
-                configuracaoDao.insere(new Configuracao(Constants.CONFIGURACAO_PERIODO_RELATORIO, selectedItem));
+                configuracaoDao.insereOuAtualiza(new Configuracao(Constants.CONFIGURACAO_PERIODO_RELATORIO, selectedItem));
             }
 
             DialogHelper.showMessageDialog(this, R.string.Titulo_sucesso, R.string.Mensagem_configuracoes_salvas_com_sucesso, DialogIcon.SUCCESS, R.string.Label_Ok, new SingleActionDialogCallback() {

@@ -19,6 +19,7 @@ import android.widget.Toast;
 
 import java.util.List;
 
+import br.com.alura.agenda.MapsActivity;
 import br.com.alura.agenda.R;
 import br.com.alura.agenda.adapter.ListaAlunosAdapter;
 import br.com.alura.agenda.client.WebClient;
@@ -138,8 +139,8 @@ public class ListaAlunosActivity extends AppCompatActivity {
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-
+    public boolean onOptionsItemSelected(MenuItem item)
+    {
         switch (item.getItemId())
         {
             case R.id.menu_enviar_notas:
@@ -150,6 +151,11 @@ public class ListaAlunosActivity extends AppCompatActivity {
             case R.id.menu_baixar_provas:
                 Intent intent = new Intent(this, ProvasActivity.class);
                 startActivity(intent);
+                break;
+
+            case R.id.menu_mapa:
+                Intent mapa = new Intent(this, MapsActivity.class);
+                startActivity(mapa);
                 break;
         }
 

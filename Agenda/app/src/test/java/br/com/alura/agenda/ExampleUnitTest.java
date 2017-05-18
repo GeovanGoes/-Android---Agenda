@@ -1,6 +1,9 @@
 package br.com.alura.agenda;
 
 import org.junit.Test;
+import org.reflections.Reflections;
+
+import java.util.regex.Pattern;
 
 import static org.junit.Assert.*;
 

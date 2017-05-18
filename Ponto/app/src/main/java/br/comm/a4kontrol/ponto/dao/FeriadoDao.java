@@ -3,12 +3,10 @@ package br.comm.a4kontrol.ponto.dao;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import br.comm.a4kontrol.ponto.helper.LogHelper;
 import br.comm.a4kontrol.ponto.modelo.Feriado;
 import br.comm.a4kontrol.ponto.util.Constants;
 
@@ -17,19 +15,19 @@ import br.comm.a4kontrol.ponto.util.Constants;
  */
 public class FeriadoDao extends DAO<Feriado> {
 
-    public FeriadoDao(Context context) {
-        super(context, Constants.TABELA_FERIADO);
+    FeriadoDao(Context context, DAO dao) {
+        super(context, Constants.TABELA_FERIADO, dao);
     }
 
     @Override
-    public ContentValues getContentValues(Feriado feriado) {
+    ContentValues getContentValues(Feriado feriado) {
         ContentValues dados = new ContentValues();
         dados.put("data", feriado.getData());
         return dados;
     }
 
     @Override
-    public String prepareConsultQuery(String data) {
+    String prepareConsultQuery(String data) {
         String sql = "SELECT * FROM " + getTableName() + " where data = '"+data+"';";
 
         if (data == null)
@@ -39,7 +37,7 @@ public class FeriadoDao extends DAO<Feriado> {
     }
 
     @Override
-    public List<Feriado> convertCursorToObject(Cursor cursor) {
+    List<Feriado> convertCursorToObject(Cursor cursor) {
         List<Feriado> feriados = new ArrayList<Feriado>();
 
         while (cursor.moveToNext()){
@@ -56,12 +54,12 @@ public class FeriadoDao extends DAO<Feriado> {
     }
 
     @Override
-    public String getParamsName() {
+    String getParamsName() {
         return "data = ?";
     }
 
     @Override
-    public String createTableQuery() {
+    String createTableQuery() {
         String createTableFeriados = "CREATE TABLE " +
                 getTableName() +
                 " (" +
@@ -71,7 +69,15 @@ public class FeriadoDao extends DAO<Feriado> {
     }
 
     @Override
-    public String updateTableQuery() {
-        return "DROP TABLE IF EXISTS "+ getTableName();
+    List<String> updateTableQuery() {
+        ArrayList<String> sqls = new ArrayList<>();
+        sqls.add("DROP TABLE IF EXISTS "+ getTableName());
+        return sqls;
+    }
+
+    @Override
+    String[] getParams(Feriado item) {
+        String[] params = {item.getData()};
+        return params;
     }
 }

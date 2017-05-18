@@ -15,12 +15,12 @@ import br.comm.a4kontrol.ponto.util.Constants;
  */
 public class ConfiguracaoDao extends DAO<Configuracao> {
 
-    public ConfiguracaoDao(Context context) {
-        super(context, Constants.TABELA_CONFIGURACAO);
+    ConfiguracaoDao(Context context, DAO dao) {
+        super(context, Constants.TABELA_CONFIGURACAO, dao);
     }
 
     @Override
-    public ContentValues getContentValues(Configuracao configuracao) {
+    ContentValues getContentValues(Configuracao configuracao) {
         ContentValues dados = new ContentValues();
         dados.put("key", configuracao.getKey());
         dados.put("value", configuracao.getValue());
@@ -28,7 +28,7 @@ public class ConfiguracaoDao extends DAO<Configuracao> {
     }
 
     @Override
-    public String prepareConsultQuery(String param) {
+    String prepareConsultQuery(String param) {
         String sql = "SELECT * FROM " + getTableName() + " where key = '"+param+"';";
 
         if (param == null)
@@ -38,7 +38,7 @@ public class ConfiguracaoDao extends DAO<Configuracao> {
     }
 
     @Override
-    public List<Configuracao> convertCursorToObject(Cursor cursor) {
+    List<Configuracao> convertCursorToObject(Cursor cursor) {
 
         List<Configuracao> configuracaoList = new ArrayList<Configuracao>();
 
@@ -56,12 +56,12 @@ public class ConfiguracaoDao extends DAO<Configuracao> {
     }
 
     @Override
-    public String getParamsName() {
+    String getParamsName() {
         return "key = ?";
     }
 
     @Override
-    public String createTableQuery() {
+    String createTableQuery() {
         String createTableFeriados = "CREATE TABLE " +
                 getTableName() +
                 " (" +
@@ -71,7 +71,15 @@ public class ConfiguracaoDao extends DAO<Configuracao> {
     }
 
     @Override
-    public String updateTableQuery() {
-        return "DROP TABLE IF EXISTS "+ getTableName();
+    List<String> updateTableQuery() {
+        ArrayList<String> sqls = new ArrayList<>();
+        sqls.add("DROP TABLE IF EXISTS "+ getTableName());
+        return sqls;
+    }
+
+    @Override
+    String[] getParams(Configuracao item) {
+        String[] params = {item.getKey()};
+        return params;
     }
 }

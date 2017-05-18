@@ -8,9 +8,9 @@ import java.util.List;
 public interface AbstractDAO<T> {
 
     /**
-     * Método responsável por insere um objeto no banco de dados
+     * Método responsável por insereOuAtualiza um objeto no banco de dados
      * */
-    void insere(T item);
+    boolean insereOuAtualiza(T item);
 
     /**
      * Método responsável por listar os registros de uma tabela
@@ -20,10 +20,10 @@ public interface AbstractDAO<T> {
     /**
      * Método responsável por deletar um registro de uma tabela
      * */
-    void deleta(String[] params);
+    boolean deleta(String[] params);
 
     /**
      * Método responsável por atualizar um registro de uma tabela
      * */
-    void atualiza(String[] params);
+    boolean atualiza(T item);
 }

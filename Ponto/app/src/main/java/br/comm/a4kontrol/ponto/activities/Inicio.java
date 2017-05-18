@@ -26,8 +26,10 @@ import java.util.Date;
 import java.util.List;
 
 import br.comm.a4kontrol.ponto.R;
+import br.comm.a4kontrol.ponto.dao.DAOChain;
 import br.comm.a4kontrol.ponto.dao.FeriadoDao;
 import br.comm.a4kontrol.ponto.dao.LancamentoDao;
+import br.comm.a4kontrol.ponto.exception.DAOInexistenteException;
 import br.comm.a4kontrol.ponto.helper.DataHelper;
 import br.comm.a4kontrol.ponto.helper.DialogHelper;
 import br.comm.a4kontrol.ponto.helper.DialogIcon;
@@ -59,16 +61,25 @@ public class Inicio extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.activity_inicio);
 
         dataSelecionada = CalendarDay.today();
-        lancamentosDao = new LancamentoDao(this);
-        feriadoDao = new FeriadoDao(this);
+
+        configureDao();
 
         findViews();
 
         inicializarView();
+    }
+
+    private void configureDao() {
+        DAOChain.configureDAO(getApplicationContext());
+        try {
+            lancamentosDao = (LancamentoDao) DAOChain.getDAO(Lancamento.class);
+            feriadoDao = (FeriadoDao) DAOChain.getDAO(Feriado.class);
+        } catch (DAOInexistenteException e) {
+            e.printStackTrace();
+        }
     }
 
     private void setDataSelecionada(CalendarDay dataSelecionada) {
@@ -190,7 +201,7 @@ public class Inicio extends AppCompatActivity {
                     DateTime hoje = DateTime.now();
                     String horario = hoje.getHourOfDay() + ":" + hoje.getMinuteOfHour();
                     String data = DataHelper.formatarData(CalendarDay.today());
-                    lancamentosDao.insere(new Lancamento(0,horario,data));
+                    lancamentosDao.insereOuAtualiza(new Lancamento(0,horario,data));
                     materialCalendarView.clearSelection();
                     materialCalendarView.setDateSelected(hoje.toDate(),true);
 
@@ -209,7 +220,7 @@ public class Inicio extends AppCompatActivity {
                         @Override
                         public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
                             String horario = hourOfDay + ":" + (minute < 10 ? "0" + minute : minute);
-                            lancamentosDao.insere(new Lancamento(0,horario,DataHelper.formatarData(dataSelecionada)));
+                            lancamentosDao.insereOuAtualiza(new Lancamento(0,horario,DataHelper.formatarData(dataSelecionada)));
                             alterarEstadoDaView(dataSelecionada);
                         }
                     },now.getHourOfDay(), now.getMinuteOfHour(), true);
@@ -257,7 +268,7 @@ public class Inicio extends AppCompatActivity {
         Feriado feriado = new Feriado();
         feriado.setData(DataHelper.formatarData(day));
         lancamentosDao.deleta(new String[]{DataHelper.formatarData(day)});
-        feriadoDao.insere(feriado);
+        feriadoDao.insereOuAtualiza(feriado);
         alterarEstadoDaView(dataSelecionada);
     }
 

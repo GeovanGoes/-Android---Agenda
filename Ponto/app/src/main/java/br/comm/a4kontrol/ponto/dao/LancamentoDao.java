@@ -3,12 +3,10 @@ package br.comm.a4kontrol.ponto.dao;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import br.comm.a4kontrol.ponto.helper.LogHelper;
 import br.comm.a4kontrol.ponto.modelo.Lancamento;
 import br.comm.a4kontrol.ponto.util.Constants;
 
@@ -17,12 +15,14 @@ import br.comm.a4kontrol.ponto.util.Constants;
  */
 public class LancamentoDao extends DAO<Lancamento> {
 
-    public LancamentoDao(Context context) {
-        super(context, Constants.TABELA_LANCAMENTO);
+
+
+    LancamentoDao(Context context, DAO dao) {
+        super(context, Constants.TABELA_LANCAMENTO, dao);
     }
 
     @Override
-    public ContentValues getContentValues(Lancamento lancamento) {
+    ContentValues getContentValues(Lancamento lancamento) {
         ContentValues dados = new ContentValues();
         dados.put("data", lancamento.getData());
         dados.put("horario", lancamento.getHorario());
@@ -30,7 +30,7 @@ public class LancamentoDao extends DAO<Lancamento> {
     }
 
     @Override
-    public String prepareConsultQuery(String data) {
+    String prepareConsultQuery(String data) {
         String sql = "SELECT * FROM "+getTableName()+" where data = '" + data +"';";
 
         if (data == null){
@@ -40,7 +40,7 @@ public class LancamentoDao extends DAO<Lancamento> {
     }
 
     @Override
-    public List<Lancamento> convertCursorToObject(Cursor cursor) {
+    List<Lancamento> convertCursorToObject(Cursor cursor) {
 
         List<Lancamento> lancamentos = new ArrayList<Lancamento>();
 
@@ -60,12 +60,12 @@ public class LancamentoDao extends DAO<Lancamento> {
     }
 
     @Override
-    public String getParamsName() {
+    String getParamsName() {
         return "data = ?";
     }
 
     @Override
-    public String createTableQuery() {
+    String createTableQuery() {
         String createTable = "CREATE TABLE "+
                 getTableName()+
                 " (" +
@@ -76,7 +76,15 @@ public class LancamentoDao extends DAO<Lancamento> {
     }
 
     @Override
-    public String updateTableQuery() {
-        return "DROP TABLE IF EXISTS "+ getTableName();
+    List<String> updateTableQuery() {
+        ArrayList<String> sqls = new ArrayList<>();
+        sqls.add("DROP TABLE IF EXISTS "+ getTableName());
+        return sqls;
+    }
+
+    @Override
+    String[] getParams(Lancamento item) {
+        String[] params = {item.getData()};
+        return params;
     }
 }

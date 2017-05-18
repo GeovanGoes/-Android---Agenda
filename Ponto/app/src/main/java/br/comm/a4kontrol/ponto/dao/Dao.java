@@ -5,14 +5,11 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.support.v4.app.NotificationBuilderWithBuilderAccessor;
 import android.util.Log;
 
-import org.reflections.Reflections;
-
+import java.lang.reflect.ParameterizedType;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 import br.comm.a4kontrol.ponto.helper.LogHelper;
 import br.comm.a4kontrol.ponto.util.Constants;
@@ -23,54 +20,71 @@ import br.comm.a4kontrol.ponto.util.Constants;
 
 public abstract class DAO<T> extends SQLiteOpenHelper implements AbstractDAO<T>{
 
-    private Context context;
     private String TABLE_NAME;
+    public static List<String> updateStatements = new ArrayList<String>();
+    public static List<String> createStatements = new ArrayList<String>();
+    private DAO dao;
 
-    public DAO(Context context, String tableName) {
+    /**
+     * Construtor
+     * */
+    DAO(Context context, String tableName, DAO dao) {
         super(context, Constants.DATABASE_NAME, null, Constants.DATABASE_VERSION);
-        this.context = context;
-        TABLE_NAME = tableName;
+
+        this.TABLE_NAME = tableName;
+        this.dao = dao;
+
+        DAO.createStatements.add(createTableQuery());
+        DAO.updateStatements.addAll(updateTableQuery());
     }
 
+    /**
+     * Sobrescrita do método onCreate
+     * */
     @Override
     public void onCreate(SQLiteDatabase db) {
-        Reflections reflections = new Reflections("br.comm.a4kontrol.ponto");
-        Set<Class<? extends Object>> classes = reflections.getSubTypesOf(Object.class);
-        for (Class<? extends Object> clazz : classes){
-            /*                DAO dao = clazz.newInstance();
-                            String query = dao.createTableQuery();
-                            Log.d("",query);*/
+        try{
+            for (String sql : createStatements){
+                db.execSQL(sql);
+            }
+        } catch (NullPointerException nullPointer) {
+            Log.d(this.getClass().getName(), "Query de create para a tabela "+getTableName()+" não encontrada");
+        } catch (Exception e) {
 
-            Log.d("","");
-
-            Log.d("","");
         }
     }
 
+    /**
+     * Sobrescrita do método onUpgrade
+     * */
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        ClassLoader.
-        Reflections reflections = new Reflections("br.comm.a4kontrol.ponto");
-            Set<Class<? extends Object>> classes = reflections.getSubTypesOf(Object.class);
-        for (Class<? extends Object> clazz : classes){
-            /*DAO dao = clazz.newInstance();
-            String query = dao.updateTableQuery();
-            Log.d("",query);*/
+        try{
+            for (String sql : updateStatements){
+                db.execSQL(sql);
+            }
+            onCreate(db);
+        } catch (NullPointerException nullPointer) {
+            Log.d(this.getClass().getName(), "Query de update para a tabela "+getTableName()+" não encontrada");
+        } catch (Exception e) {
 
-            Log.d("","");
-
-            Log.d("","");
         }
-        onCreate(db);
     }
 
     @Override
-    public void insere(T item) {
+    public boolean insereOuAtualiza(T item) {
         try {
-            SQLiteDatabase writableDatabase = getWritableDatabase();
-            writableDatabase.insert(getTableName(), null, getContentValues(item));
+            boolean atualizaResult = atualiza(item);
+            if (!atualizaResult){
+                SQLiteDatabase writableDatabase = getWritableDatabase();
+                writableDatabase.insert(getTableName(), null, getContentValues(item));
+                return true;
+            } else {
+                return atualizaResult;
+            }
         } catch(Exception e) {
             LogHelper.error(this, e, "");
+            return false;
         }
     }
 
@@ -91,32 +105,82 @@ public abstract class DAO<T> extends SQLiteOpenHelper implements AbstractDAO<T>{
     }
 
     @Override
-    public void deleta(String[] params) {
+    public boolean deleta(String[] params) {
         try {
             getWritableDatabase().delete(getTableName(), getParamsName(), params);
+            return true;
         } catch (Exception e) {
             LogHelper.error(this, e, "");
+            return false;
         }
     }
 
     @Override
-    public void atualiza(String[] params) {
-        // TODO: Implementar caso seja necessário
+    public boolean atualiza(T item) {
+        try {
+            getWritableDatabase().update(getTableName(),getContentValues(item), getParamsName(),getParams(item));
+            return true;
+        } catch (Exception e) {
+            LogHelper.error(this, e, "");
+            return false;
+        }
     }
 
-    protected String getTableName(){
+    /**
+     * Método responsável por retornar o nome da tabela
+     * @return nome da tabela
+     * */
+    String getTableName(){
         return this.TABLE_NAME;
     }
 
-    public abstract ContentValues getContentValues(T object);
+    /**
+     * Método resposável por comparar o Class recebido por parâmetro com o Class do Generics
+     * @param clazz
+     * @return boolean
+     * */
+    private boolean compare(Class clazz){
 
-    public abstract String prepareConsultQuery(String param);
+        if(clazz == getGenericName())
+            return true;
+        else
+            return false;
+    }
 
-    public abstract List<T> convertCursorToObject(Cursor cursor);
+    /**
+     * Método responsável por retornar o DAO correspondete ao model
+     * @param clazz
+     * @return AbstractDAO
+     * */
+    AbstractDAO getDAO(Class clazz){
+        if (compare(clazz)) {
+            return this;
+        } else if (dao == null) {
+            return null;
+        } else {
+            return dao.getDAO(clazz);
+        }
+    }
 
-    public abstract String getParamsName();
+    /**
+     * Método responsável por retornar o Class recebido como parametro via Generics
+     * @return Class
+     * */
+    private Class getGenericName() {
+        return ((Class<T>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0]);
+    }
 
-    public abstract String createTableQuery();
+    abstract ContentValues getContentValues(T object);
 
-    public abstract String updateTableQuery();
+    abstract String prepareConsultQuery(String param);
+
+    abstract List<T> convertCursorToObject(Cursor cursor);
+
+    abstract String getParamsName();
+
+    abstract String createTableQuery();
+
+    abstract List<String> updateTableQuery();
+
+    abstract String[] getParams(T item);
 }

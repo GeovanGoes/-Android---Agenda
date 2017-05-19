@@ -7,6 +7,12 @@ import java.util.List;
  */
 public interface AbstractDAO<T> {
 
+
+    /**
+     * Método responsável por inserir um objeto no banco de dados
+     * */
+    boolean insere(T item);
+
     /**
      * Método responsável por insereOuAtualiza um objeto no banco de dados
      * */

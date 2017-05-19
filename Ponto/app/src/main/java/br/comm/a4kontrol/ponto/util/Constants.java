@@ -16,10 +16,15 @@ public class Constants {
     public static final String CONFIGURACAO_PERIODO_RELATORIO = "PERIODO_RELATORIO";
 
     public static final String DATABASE_NAME = "PONTO";
-    public static final int DATABASE_VERSION = 410;
+    public static final int DATABASE_VERSION = 414;
     public static final String TABELA_CONFIGURACAO = "Configuracoes";
     public static final String TABELA_FERIADO = "Feriados";
     public static final String TABELA_LANCAMENTO = "Lancamentos";
+
+    public static final String KEY_PERIODO_INICIO = "Inicio";
+    public static final String KEY_PERIODO_FIM = "Fim";
+
+    public static final Integer HORAS_DIA = 8;
 
 
 }

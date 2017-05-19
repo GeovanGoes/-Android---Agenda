@@ -5,13 +5,13 @@ package br.comm.a4kontrol.ponto.enumeration;
  */
 public enum PeriodosEnum {
 
-    Mensal(0),
-    Bimestral(1),
-    Trimestral(2),
-    Quadrimestral(3),
-    Quimestral(4),
-    Semestral(5),
-    Anual(6);
+    Mensal(1),
+    Bimestral(2),
+    Trimestral(3),
+    Quadrimestral(4),
+    Quimestral(5),
+    Semestral(6),
+    Anual(12);
 
     private final int valor;
 

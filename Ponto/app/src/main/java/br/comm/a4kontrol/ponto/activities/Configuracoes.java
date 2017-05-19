@@ -125,7 +125,6 @@ public class Configuracoes extends AppCompatActivity {
             if (data != null && !data.equals("")) {
                 configuracaoDao.insereOuAtualiza(new Configuracao(Constants.CONFIGURACAO_INICIO_DO_CICLO,data));
             }
-
             String selectedItem = (String) spinnerPeriodo.getSelectedItem();
 
             if (selectedItem != null){

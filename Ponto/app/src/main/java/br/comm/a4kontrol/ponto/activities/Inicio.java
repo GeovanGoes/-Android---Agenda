@@ -199,9 +199,11 @@ public class Inicio extends AppCompatActivity {
                     mostrarMensagemDeValidacaoParaLancamentoDeHorasNoFeriado();
                 } else {
                     DateTime hoje = DateTime.now();
-                    String horario = hoje.getHourOfDay() + ":" + hoje.getMinuteOfHour();
+                    int horas = hoje.getHourOfDay();
+                    int minutos = hoje.getMinuteOfHour();
+                    String horario = horas + ":" + (minutos < 10 ? "0" + minutos : minutos);
                     String data = DataHelper.formatarData(CalendarDay.today());
-                    lancamentosDao.insereOuAtualiza(new Lancamento(0,horario,data));
+                    lancamentosDao.insere(new Lancamento(0,horario,data));
                     materialCalendarView.clearSelection();
                     materialCalendarView.setDateSelected(hoje.toDate(),true);
 
@@ -220,7 +222,7 @@ public class Inicio extends AppCompatActivity {
                         @Override
                         public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
                             String horario = hourOfDay + ":" + (minute < 10 ? "0" + minute : minute);
-                            lancamentosDao.insereOuAtualiza(new Lancamento(0,horario,DataHelper.formatarData(dataSelecionada)));
+                            lancamentosDao.insere(new Lancamento(0,horario,DataHelper.formatarData(dataSelecionada)));
                             alterarEstadoDaView(dataSelecionada);
                         }
                     },now.getHourOfDay(), now.getMinuteOfHour(), true);
@@ -268,7 +270,7 @@ public class Inicio extends AppCompatActivity {
         Feriado feriado = new Feriado();
         feriado.setData(DataHelper.formatarData(day));
         lancamentosDao.deleta(new String[]{DataHelper.formatarData(day)});
-        feriadoDao.insereOuAtualiza(feriado);
+        feriadoDao.insere(feriado);
         alterarEstadoDaView(dataSelecionada);
     }
 

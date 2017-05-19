@@ -76,9 +76,7 @@ public abstract class DAO<T> extends SQLiteOpenHelper implements AbstractDAO<T>{
         try {
             boolean atualizaResult = atualiza(item);
             if (!atualizaResult){
-                SQLiteDatabase writableDatabase = getWritableDatabase();
-                writableDatabase.insert(getTableName(), null, getContentValues(item));
-                return true;
+                return insere(item);
             } else {
                 return atualizaResult;
             }
@@ -118,9 +116,28 @@ public abstract class DAO<T> extends SQLiteOpenHelper implements AbstractDAO<T>{
     @Override
     public boolean atualiza(T item) {
         try {
-            getWritableDatabase().update(getTableName(),getContentValues(item), getParamsName(),getParams(item));
-            return true;
+            int linhasAfetas = getWritableDatabase().update(getTableName(), getContentValues(item), getParamsName(), getParams(item));
+            if(linhasAfetas > 0)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         } catch (Exception e) {
+            LogHelper.error(this, e, "");
+            return false;
+        }
+    }
+
+    @Override
+    public boolean insere(T item){
+        try {
+            SQLiteDatabase writableDatabase = getWritableDatabase();
+            writableDatabase.insert(getTableName(), null, getContentValues(item));
+            return true;
+        } catch(Exception e) {
             LogHelper.error(this, e, "");
             return false;
         }

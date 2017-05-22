@@ -19,7 +19,7 @@ public class AlunoConverter {
             for (Aluno aluno:alunos) {
                 jsonStringer.object();
                 jsonStringer.key("nome").value(aluno.getNome());
-                jsonStringer.key("nota").value(aluno.getRatting());
+                jsonStringer.key("nota").value(aluno.getNota());
                 jsonStringer.endObject();
             }
             jsonStringer.endArray();

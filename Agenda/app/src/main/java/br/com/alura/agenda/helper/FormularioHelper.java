@@ -2,7 +2,6 @@ package br.com.alura.agenda.helper;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.os.Bundle;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RatingBar;
@@ -49,7 +48,7 @@ public class FormularioHelper {
         this.aluno.setEndereco(this.endereco.getText().toString());
         this.aluno.setTelefone(this.telefone.getText().toString());
         this.aluno.setSite(this.site.getText().toString());
-        this.aluno.setRatting(this.nota.getRating());
+        this.aluno.setNota(new Double(this.nota.getRating()));
         this.aluno.setCaminhoFoto((String) this.formularioFoto.getTag());
         return this.aluno;
     }
@@ -65,7 +64,7 @@ public class FormularioHelper {
         this.endereco.setText(aluno.getEndereco());
         this.telefone.setText(aluno.getTelefone());
         this.site.setText(aluno.getSite());
-        this.nota.setRating(aluno.getRatting());
+        this.nota.setRating(aluno.getNota().floatValue());
         carregaImagem(aluno.getCaminhoFoto(), formularioFoto);
     }
 

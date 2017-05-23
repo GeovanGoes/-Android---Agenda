@@ -4,7 +4,6 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -12,8 +11,6 @@ import android.widget.TextView;
 import java.util.List;
 
 import br.com.alura.agenda.R;
-import br.com.alura.agenda.activity.FormularioActivity;
-import br.com.alura.agenda.activity.ListaAlunosActivity;
 import br.com.alura.agenda.helper.FormularioHelper;
 import br.com.alura.agenda.modelo.Aluno;
 
@@ -45,7 +42,7 @@ public class ListaAlunosAdapter extends BaseAdapter {
 
     @Override
     public long getItemId(int position) {
-        return alunos.get(position).getId();
+        return 0;
     }
 
     @Override

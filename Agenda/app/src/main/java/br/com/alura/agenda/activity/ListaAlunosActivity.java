@@ -19,18 +19,16 @@ import android.widget.Toast;
 
 import java.util.List;
 
+import br.com.alura.agenda.DTO.AlunoSync;
 import br.com.alura.agenda.R;
 import br.com.alura.agenda.adapter.ListaAlunosAdapter;
 import br.com.alura.agenda.dao.AlunoDAO;
 import br.com.alura.agenda.modelo.Aluno;
 import br.com.alura.agenda.retrofit.RetrofitInicializador;
-import br.com.alura.agenda.services.AlunoService;
 import br.com.alura.agenda.task.EnviaAlunosTask;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-
-import static br.com.alura.agenda.R.id.lista;
 
 public class ListaAlunosActivity extends AppCompatActivity {
 
@@ -72,6 +70,27 @@ public class ListaAlunosActivity extends AppCompatActivity {
     protected void onResume() {
 
         super.onResume();
+
+        Call<AlunoSync> lista = new RetrofitInicializador().getAlunoService().lista();
+
+        lista.enqueue(new Callback<AlunoSync>() {
+            @Override
+            public void onResponse(Call<AlunoSync> call, Response<AlunoSync> response) {
+                AlunoSync alunoSync = response.body();
+
+                List<Aluno> alunos = alunoSync.getAlunos();
+                AlunoDAO dao = new AlunoDAO(ListaAlunosActivity.this);
+                dao.sincroniza(alunos);
+                dao.close();
+
+                carregarLista();
+            }
+
+            @Override
+            public void onFailure(Call<AlunoSync> call, Throwable t) {
+                Log.e("OnFailure:",t.getMessage());
+            }
+        });
         carregarLista();
     }
 
@@ -79,6 +98,10 @@ public class ListaAlunosActivity extends AppCompatActivity {
 
         AlunoDAO dao = new AlunoDAO(this);
         List<Aluno> alunos = dao.getAlunos();
+
+        for (Aluno aluno : alunos) {
+            Log.d("Id do"+aluno.getNome()+":",aluno.getId() == null ? "" : aluno.getId());
+        }
 
         dao.close();
 

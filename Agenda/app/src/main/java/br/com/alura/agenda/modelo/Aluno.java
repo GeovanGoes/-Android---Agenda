@@ -1,5 +1,6 @@
 package br.com.alura.agenda.modelo;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.io.Serializable;
@@ -8,13 +9,14 @@ import java.io.Serializable;
  * Created by root on 21/04/17.
  * Model que representa um aluno
  */
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Aluno implements Serializable {
 
     /**
-     * Id
+     * UUID do usuario
      * */
-    @JsonProperty("idCliente")
-    private Long id;
+    @JsonProperty("id")
+    private String id;
 
     /**
      * Nome
@@ -49,7 +51,7 @@ public class Aluno implements Serializable {
     public Aluno() {
     }
 
-    public Aluno(Long id, String nome, String endereco, String telefone, String site, Double nota, String caminhoFoto) {
+    public Aluno(String id, String nome, String endereco, String telefone, String site, Double nota, String caminhoFoto) {
         this.id = id;
         this.nome = nome;
         this.endereco = endereco;
@@ -59,20 +61,20 @@ public class Aluno implements Serializable {
         this.caminhoFoto = caminhoFoto;
     }
 
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
     public String getCaminhoFoto() {
         return caminhoFoto;
     }
 
     public void setCaminhoFoto(String caminhoFoto) {
         this.caminhoFoto = caminhoFoto;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     public String getNome() {

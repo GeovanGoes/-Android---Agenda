@@ -1,11 +1,14 @@
-package br.com.alura.agenda;
+package br.com.alura.agenda.activity;
 
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
 import android.os.Bundle;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 
 import com.google.android.gms.maps.SupportMapFragment;
+
+import br.com.alura.agenda.R;
+import br.com.alura.agenda.fragment.MapsFragment;
 
 public class MapsActivity extends AppCompatActivity {
 
@@ -14,13 +17,13 @@ public class MapsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
 
-        FragmentManager manager = getFragmentManager();
+        FragmentManager manager = getSupportFragmentManager();
 
         FragmentTransaction tx = manager.beginTransaction();
 
-        SupportMapFragment supportMapFragment = new SupportMapFragment();
+        MapsFragment mapsFragment = new MapsFragment();
 
-        FragmentTransaction replace = tx.replace(R.id.frame_mapa, supportMapFragment);
+        FragmentTransaction replace = tx.replace(R.id.frame_mapa, mapsFragment);
         tx.commit();
     }
 }

@@ -1,30 +1,28 @@
 package br.com.alura.agenda.activity;
 
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
-import android.os.Environment;
+import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.Toast;
 
 import java.io.File;
-import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 import br.com.alura.agenda.R;
 import br.com.alura.agenda.dao.AlunoDAO;
 import br.com.alura.agenda.helper.FormularioHelper;
 import br.com.alura.agenda.modelo.Aluno;
+import br.com.alura.agenda.retrofit.RetrofitInicializador;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class FormularioActivity extends AppCompatActivity {
 
@@ -89,7 +87,20 @@ public class FormularioActivity extends AppCompatActivity {
                 } else {
                     dao.insereAluno(aluno);
                     Toast.makeText(this, "Inserido com sucesso!", Toast.LENGTH_SHORT).show();
+
                 }
+                Call insere = new RetrofitInicializador().getAlunoService().insere(aluno);
+                insere.enqueue(new Callback() {
+                    @Override
+                    public void onResponse(Call call, Response response) {
+                        Log.i("response", "sucesso");
+                    }
+
+                    @Override
+                    public void onFailure(Call call, Throwable t) {
+                        Log.e("failure", "deu merda");
+                    }
+                });
                 dao.close();
                 finish();
                 break;

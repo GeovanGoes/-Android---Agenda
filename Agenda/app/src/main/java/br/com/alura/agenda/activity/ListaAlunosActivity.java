@@ -7,26 +7,28 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 
 import java.util.List;
 
-import br.com.alura.agenda.MapsActivity;
 import br.com.alura.agenda.R;
 import br.com.alura.agenda.adapter.ListaAlunosAdapter;
-import br.com.alura.agenda.client.WebClient;
-import br.com.alura.agenda.converter.AlunoConverter;
 import br.com.alura.agenda.dao.AlunoDAO;
 import br.com.alura.agenda.modelo.Aluno;
+import br.com.alura.agenda.retrofit.RetrofitInicializador;
+import br.com.alura.agenda.services.AlunoService;
 import br.com.alura.agenda.task.EnviaAlunosTask;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 import static br.com.alura.agenda.R.id.lista;
 
@@ -41,7 +43,6 @@ public class ListaAlunosActivity extends AppCompatActivity {
         setContentView(R.layout.activity_lista_alunos);
 
         Button adicionarAluno = (Button) findViewById(R.id.lista_adicionar_aluno);
-
         adicionarAluno.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -51,7 +52,7 @@ public class ListaAlunosActivity extends AppCompatActivity {
             }
         });
 
-        this.listView = (ListView) findViewById(lista);
+        this.listView = (ListView) findViewById(R.id.lista);
 
         this.listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override

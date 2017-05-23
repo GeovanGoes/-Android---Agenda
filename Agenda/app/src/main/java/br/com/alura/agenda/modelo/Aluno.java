@@ -1,5 +1,7 @@
 package br.com.alura.agenda.modelo;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.io.Serializable;
 
 /**
@@ -11,6 +13,7 @@ public class Aluno implements Serializable {
     /**
      * Id
      * */
+    @JsonProperty("idCliente")
     private Long id;
 
     /**
@@ -36,7 +39,7 @@ public class Aluno implements Serializable {
     /**
      *
      * */
-    private float ratting;
+    private Double nota;
 
     /**
      *
@@ -46,13 +49,13 @@ public class Aluno implements Serializable {
     public Aluno() {
     }
 
-    public Aluno(Long id, String nome, String endereco, String telefone, String site, float ratting, String caminhoFoto) {
+    public Aluno(Long id, String nome, String endereco, String telefone, String site, Double nota, String caminhoFoto) {
         this.id = id;
         this.nome = nome;
         this.endereco = endereco;
         this.telefone = telefone;
         this.site = site;
-        this.ratting = ratting;
+        this.nota = nota;
         this.caminhoFoto = caminhoFoto;
     }
 
@@ -104,12 +107,12 @@ public class Aluno implements Serializable {
         this.site = site;
     }
 
-    public float getRatting() {
-        return ratting;
+    public Double getNota() {
+        return nota;
     }
 
-    public void setRatting(float ratting) {
-        this.ratting = ratting;
+    public void setNota(Double nota) {
+        this.nota = nota;
     }
 
     @Override

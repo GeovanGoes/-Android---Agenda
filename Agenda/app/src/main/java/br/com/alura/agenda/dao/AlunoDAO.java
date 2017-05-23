@@ -47,7 +47,8 @@ public class AlunoDAO extends SQLiteOpenHelper{
     public void insereAluno(Aluno aluno) {
 
         SQLiteDatabase db = getWritableDatabase();
-        db.insert("Alunos", null, getContentValues(aluno));
+        long id = db.insert("Alunos", null, getContentValues(aluno));
+        aluno.setId(id);
     }
 
     public List<Aluno> getAlunos(){
@@ -65,7 +66,7 @@ public class AlunoDAO extends SQLiteOpenHelper{
             String endereco = resultOfQuery.getString(resultOfQuery.getColumnIndex("endereco"));
             String telefone = resultOfQuery.getString(resultOfQuery.getColumnIndex("telefone"));
             String site = resultOfQuery.getString(resultOfQuery.getColumnIndex("site"));
-            float nota = resultOfQuery.getFloat(resultOfQuery.getColumnIndex("nota"));
+            Double nota = resultOfQuery.getDouble(resultOfQuery.getColumnIndex("nota"));
             String caminhoFoto = resultOfQuery.getString(resultOfQuery.getColumnIndex("caminhoFoto"));
 
             Aluno aluno = new Aluno(id, nome, endereco, telefone, site, nota, caminhoFoto);
@@ -94,7 +95,7 @@ public class AlunoDAO extends SQLiteOpenHelper{
         dados.put("endereco", aluno.getEndereco());
         dados.put("telefone", aluno.getTelefone());
         dados.put("site", aluno.getSite());
-        dados.put("nota", aluno.getRatting());
+        dados.put("nota", aluno.getNota());
         dados.put("caminhoFoto", aluno.getCaminhoFoto());
         return dados;
     }

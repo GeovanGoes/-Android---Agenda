@@ -18,7 +18,7 @@ import br.comm.a4kontrol.ponto.util.Constants;
  * Created by geovan.goes on 09/05/2017.
  */
 
-public abstract class DAO<T> extends SQLiteOpenHelper implements AbstractDAO<T>{
+abstract class DAO<T> extends SQLiteOpenHelper implements AbstractDAO<T>{
 
     private String TABLE_NAME;
     public static List<String> updateStatements = new ArrayList<String>();
@@ -135,7 +135,7 @@ public abstract class DAO<T> extends SQLiteOpenHelper implements AbstractDAO<T>{
     public boolean insere(T item){
         try {
             SQLiteDatabase writableDatabase = getWritableDatabase();
-            writableDatabase.insert(getTableName(), null, getContentValues(item));
+            long insert = writableDatabase.insert(getTableName(), null, getContentValues(item));
             return true;
         } catch(Exception e) {
             LogHelper.error(this, e, "");

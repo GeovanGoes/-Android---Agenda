@@ -9,6 +9,7 @@ import android.util.Log;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeConstants;
 import org.joda.time.Interval;
+import org.joda.time.Weeks;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -41,11 +42,12 @@ import static org.junit.Assert.*;
 public class ExampleInstrumentedTest {
     private LancamentoDao lancamentoDao;
     private FeriadoDao feriadoDao;
+    private Context appContext;
 
     @Test
     public void useAppContext() throws Exception {
         // Context of the app under test.
-        Context appContext = InstrumentationRegistry.getTargetContext();
+        appContext = InstrumentationRegistry.getTargetContext();
 
         assertEquals("br.comm.a4kontrol.ponto", appContext.getPackageName());
     }
@@ -74,6 +76,24 @@ public class ExampleInstrumentedTest {
 
         Log.d("","");
 
+    }
+
+    @Test
+    public void insereVariosLancamentosParaTesteCaralho(){
+        Context appContext = InstrumentationRegistry.getTargetContext();
+        DAOChain.configureDAO(appContext);
+        configDao();
+        DateTime now = DateTime.now();
+        for (int i = 1 ; i < 110 ; i++){
+            if (now.getDayOfWeek() != DateTimeConstants.SATURDAY && now.getDayOfWeek() != DateTimeConstants.SUNDAY) {
+                String data = DataHelper.formatarData(now);
+                boolean insere = lancamentoDao.insere(new Lancamento(0, "08:00", data));
+                boolean insere1 = lancamentoDao.insere(new Lancamento(0, "12:00", data));
+                boolean insere2 = lancamentoDao.insere(new Lancamento(0, "13:00", data));
+                boolean insere3 = lancamentoDao.insere(new Lancamento(0, "18:00", data));
+            }
+            now = now.plusDays(i*-1);
+        }
     }
 
     public void configDao(){

@@ -36,6 +36,7 @@ import br.comm.a4kontrol.ponto.helper.DialogIcon;
 import br.comm.a4kontrol.ponto.helper.LogHelper;
 import br.comm.a4kontrol.ponto.modelo.Feriado;
 import br.comm.a4kontrol.ponto.modelo.Lancamento;
+import br.comm.a4kontrol.ponto.util.MassaDeDados;
 import br.comm.a4kontrol.ponto.util.QuestionDialogCallback;
 
 public class Inicio extends AppCompatActivity {
@@ -66,6 +67,8 @@ public class Inicio extends AppCompatActivity {
         dataSelecionada = CalendarDay.today();
 
         configureDao();
+
+        MassaDeDados.insereVariosLancamentosParaTesteCaralho(lancamentosDao);
 
         findViews();
 

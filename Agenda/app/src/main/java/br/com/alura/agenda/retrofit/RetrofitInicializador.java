@@ -23,7 +23,7 @@ public class RetrofitInicializador {
         OkHttpClient.Builder client = new OkHttpClient.Builder();
         client.addInterceptor(interceptor);
 
-        reftrofit = new Retrofit.Builder().baseUrl("http://192.168.1.109:8080/api/").addConverterFactory(JacksonConverterFactory.create()).client(client.build()).build();
+        reftrofit = new Retrofit.Builder().baseUrl("http://192.168.15.4:8080/api/").addConverterFactory(JacksonConverterFactory.create()).client(client.build()).build();
     }
 
     public AlunoService getAlunoService() {

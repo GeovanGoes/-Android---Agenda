@@ -6,6 +6,7 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.ContextMenu;
@@ -33,12 +34,22 @@ import retrofit2.Response;
 public class ListaAlunosActivity extends AppCompatActivity {
 
     private ListView listView;
+    private SwipeRefreshLayout swype;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_lista_alunos);
+
+        swype = (SwipeRefreshLayout) findViewById(R.id.swipe_lista_aluno);
+        swype.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                buscaAlunos();
+            }
+        });
+
 
         Button adicionarAluno = (Button) findViewById(R.id.lista_adicionar_aluno);
         adicionarAluno.setOnClickListener(new View.OnClickListener() {
@@ -64,6 +75,8 @@ public class ListaAlunosActivity extends AppCompatActivity {
         });
 
         registerForContextMenu(this.listView);
+
+        buscaAlunos();
     }
 
     @Override
@@ -71,6 +84,10 @@ public class ListaAlunosActivity extends AppCompatActivity {
 
         super.onResume();
 
+        carregarLista();
+    }
+
+    private void buscaAlunos() {
         Call<AlunoSync> lista = new RetrofitInicializador().getAlunoService().lista();
 
         lista.enqueue(new Callback<AlunoSync>() {
@@ -84,14 +101,15 @@ public class ListaAlunosActivity extends AppCompatActivity {
                 dao.close();
 
                 carregarLista();
+                swype.setRefreshing(false);
             }
 
             @Override
             public void onFailure(Call<AlunoSync> call, Throwable t) {
                 Log.e("OnFailure:",t.getMessage());
+                swype.setRefreshing(false);
             }
         });
-        carregarLista();
     }
 
     private void carregarLista() {
@@ -121,11 +139,23 @@ public class ListaAlunosActivity extends AppCompatActivity {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
 
-                AlunoDAO dao = new AlunoDAO(ListaAlunosActivity.this);
-                dao.deletar(aluno);
-                dao.close();
-                carregarLista();
-                Toast.makeText(ListaAlunosActivity.this, aluno.getNome(), Toast.LENGTH_SHORT).show();
+                Call<Void> deleta = new RetrofitInicializador().getAlunoService().deleta(aluno.getId());
+                deleta.enqueue(new Callback<Void>() {
+                    @Override
+                    public void onResponse(Call<Void> call, Response<Void> response) {
+                        AlunoDAO dao = new AlunoDAO(ListaAlunosActivity.this);
+                        dao.deletar(aluno);
+                        dao.close();
+                        carregarLista();
+                    }
+
+                    @Override
+                    public void onFailure(Call<Void> call, Throwable t) {
+                        Toast.makeText(ListaAlunosActivity.this, "Nao foi possivel remover o aluno.", Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+
                 return false;
             }
         });

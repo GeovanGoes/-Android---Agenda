@@ -3,6 +3,7 @@ package br.com.alura.agenda.retrofit;
 import java.util.logging.Level;
 
 import br.com.alura.agenda.services.AlunoService;
+import br.com.alura.agenda.services.DispositivoService;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
@@ -23,10 +24,14 @@ public class RetrofitInicializador {
         OkHttpClient.Builder client = new OkHttpClient.Builder();
         client.addInterceptor(interceptor);
 
-        reftrofit = new Retrofit.Builder().baseUrl("http://192.168.15.4:8080/api/").addConverterFactory(JacksonConverterFactory.create()).client(client.build()).build();
+        reftrofit = new Retrofit.Builder().baseUrl("http://192.168.1.109:8080/api/").addConverterFactory(JacksonConverterFactory.create()).client(client.build()).build();
     }
 
     public AlunoService getAlunoService() {
         return reftrofit.create(AlunoService.class);
+    }
+
+    public DispositivoService getDispositivoService() {
+        return reftrofit.create(DispositivoService.class);
     }
 }

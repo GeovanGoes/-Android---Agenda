@@ -7,7 +7,6 @@
     <JAVADOC />
     <SOURCES>
       <root url="jar://C:/android_sdk_viviane/extras/android/m2repository/com/android/support/test/exposed-instrumentation-api-publish/0.5/exposed-instrumentation-api-publish-0.5-sources.jar!/" />
-      <root url="jar:///opt/android-sdk-linux/extras/android/m2repository/com/android/support/test/exposed-instrumentation-api-publish/0.5/exposed-instrumentation-api-publish-0.5-sources.jar!/" />
     </SOURCES>
   </library>
 </component>

@@ -10,6 +10,6 @@ import retrofit2.http.Path;
  */
 public interface DispositivoService {
 
-    @POST("firebase/dispositivo/{token}")
+    @POST("firebase/dispositivo")
     Call<Void> enviaToken(@Header("token") String token);
 }

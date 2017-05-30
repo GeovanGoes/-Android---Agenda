@@ -20,7 +20,7 @@ public class DataHelper {
 
     public static String formatarData(CalendarDay calendarDay){
         if (calendarDay != null){
-            return calendarDay.getDay() + "-" + calendarDay.getMonth() + "-" + calendarDay.getYear();
+            return calendarDay.getDay() + "-" + (calendarDay.getMonth()+1) + "-" + calendarDay.getYear();
         }
 
         return null;

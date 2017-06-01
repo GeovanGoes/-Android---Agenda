@@ -48,6 +48,8 @@ public class Aluno implements Serializable {
      * */
     private String caminhoFoto;
 
+    private int desativado;
+
     public Aluno() {
     }
 
@@ -115,6 +117,18 @@ public class Aluno implements Serializable {
 
     public void setNota(Double nota) {
         this.nota = nota;
+    }
+
+    public int getDesativado() {
+        return desativado;
+    }
+
+    public void setDesativado(int desativado) {
+        this.desativado = desativado;
+    }
+
+    public boolean estaDesativado(){
+        return desativado == 1;
     }
 
     @Override

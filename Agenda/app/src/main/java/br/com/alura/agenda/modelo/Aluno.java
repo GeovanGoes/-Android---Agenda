@@ -50,6 +50,8 @@ public class Aluno implements Serializable {
 
     private int desativado;
 
+    private int sincronizado;
+
     public Aluno() {
     }
 
@@ -61,6 +63,10 @@ public class Aluno implements Serializable {
         this.site = site;
         this.nota = nota;
         this.caminhoFoto = caminhoFoto;
+    }
+
+    public void sincroniza(){
+        this.sincronizado = 1;
     }
 
     public String getId() {
@@ -131,8 +137,25 @@ public class Aluno implements Serializable {
         return desativado == 1;
     }
 
+    public int getSincronizado() {
+        return sincronizado;
+    }
+
+    public void setSincronizado(int sincronizado) {
+        this.sincronizado = sincronizado;
+    }
+
     @Override
     public String toString() {
         return this.id + " - " + this.nome;
+    }
+
+    public void desincroninza() {
+        this.sincronizado = 0;
+    }
+
+    public void desativar() {
+        this.desativado = 1;
+        desincroninza();
     }
 }

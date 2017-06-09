@@ -16,7 +16,6 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -29,12 +28,8 @@ import br.com.alura.agenda.adapter.ListaAlunosAdapter;
 import br.com.alura.agenda.dao.AlunoDAO;
 import br.com.alura.agenda.event.AtualizaListaAlunoEvent;
 import br.com.alura.agenda.modelo.Aluno;
-import br.com.alura.agenda.retrofit.RetrofitInicializador;
 import br.com.alura.agenda.sinc.AlunosSincronizador;
 import br.com.alura.agenda.task.EnviaAlunosTask;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 public class ListaAlunosActivity extends AppCompatActivity {
 
@@ -54,6 +49,7 @@ public class ListaAlunosActivity extends AppCompatActivity {
             @Override
             public void onRefresh() {
                 alunosSincronizador.buscaTodos();
+                alunosSincronizador.sincronizaAlunosInternos();
             }
         });
 
@@ -84,6 +80,7 @@ public class ListaAlunosActivity extends AppCompatActivity {
         registerForContextMenu(this.listView);
 
         alunosSincronizador.buscaTodos();
+        alunosSincronizador.sincronizaAlunosInternos();
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -112,7 +109,7 @@ public class ListaAlunosActivity extends AppCompatActivity {
         List<Aluno> alunos = dao.getAlunos();
 
         for (Aluno aluno : alunos) {
-            Log.d("Id do"+aluno.getNome()+":",aluno.getId() == null ? "" : aluno.getId());
+            Log.d("PORRA!!!!","Está sincronizado? " + String.valueOf(aluno.getSincronizado()));
         }
 
         dao.close();
@@ -133,22 +130,12 @@ public class ListaAlunosActivity extends AppCompatActivity {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
 
-                Call<Void> deleta = new RetrofitInicializador().getAlunoService().deleta(aluno.getId());
-                deleta.enqueue(new Callback<Void>() {
-                    @Override
-                    public void onResponse(Call<Void> call, Response<Void> response) {
-                        AlunoDAO dao = new AlunoDAO(ListaAlunosActivity.this);
-                        dao.deletar(aluno);
-                        dao.close();
-                        carregarLista();
-                    }
+                AlunoDAO dao = new AlunoDAO(ListaAlunosActivity.this);
+                dao.deletar(aluno);
+                dao.close();
+                carregarLista();
 
-                    @Override
-                    public void onFailure(Call<Void> call, Throwable t) {
-                        Toast.makeText(ListaAlunosActivity.this, "Nao foi possivel remover o aluno.", Toast.LENGTH_SHORT).show();
-                    }
-                });
-
+                alunosSincronizador.deleta(aluno);
 
                 return false;
             }

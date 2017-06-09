@@ -4,12 +4,14 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 import android.util.Log;
+import android.widget.Toast;
 
 import org.greenrobot.eventbus.EventBus;
 
 import java.util.List;
 
 import br.com.alura.agenda.DTO.AlunoSync;
+import br.com.alura.agenda.activity.ListaAlunosActivity;
 import br.com.alura.agenda.dao.AlunoDAO;
 import br.com.alura.agenda.event.AtualizaListaAlunoEvent;
 import br.com.alura.agenda.modelo.Aluno;
@@ -74,5 +76,40 @@ public class AlunosSincronizador {
                 eventBus.post(new AtualizaListaAlunoEvent());
             }
         };
+    }
+
+    public void sincronizaAlunosInternos(){
+        final AlunoDAO dao = new AlunoDAO(context);
+
+        List<Aluno> alunos = dao.listaNaoSincronizados();
+
+        Call<AlunoSync> atualiza = new RetrofitInicializador().getAlunoService().atualiza(alunos);
+        atualiza.enqueue(new Callback<AlunoSync>() {
+            @Override
+            public void onResponse(Call<AlunoSync> call, Response<AlunoSync> response) {
+                AlunoSync body = response.body();
+                dao.sincroniza(body.getAlunos());
+                dao.close();
+            }
+
+            @Override
+            public void onFailure(Call<AlunoSync> call, Throwable t) {
+                dao.close();
+            }
+        });
+    }
+
+    public void deleta(Aluno aluno) {
+        Call<Void> deleta = new RetrofitInicializador().getAlunoService().deleta(aluno.getId());
+        deleta.enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+            }
+        });
     }
 }

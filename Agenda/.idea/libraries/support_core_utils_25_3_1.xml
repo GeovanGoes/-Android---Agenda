@@ -9,8 +9,8 @@
     </CLASSES>
     <JAVADOC />
     <SOURCES>
-      <root url="jar://C:/android_sdk_viviane/extras/android/m2repository/com/android/support/support-core-utils/25.3.1/support-core-utils-25.3.1-sources.jar!/" />
       <root url="jar:///opt/android-sdk-linux/extras/android/m2repository/com/android/support/support-core-utils/25.3.1/support-core-utils-25.3.1-sources.jar!/" />
+      <root url="jar://C:/android_sdk_viviane/extras/android/m2repository/com/android/support/support-core-utils/25.3.1/support-core-utils-25.3.1-sources.jar!/" />
     </SOURCES>
   </library>
 </component>

@@ -49,7 +49,7 @@ public class ListaAlunosActivity extends AppCompatActivity {
             @Override
             public void onRefresh() {
                 alunosSincronizador.buscaTodos();
-                alunosSincronizador.sincronizaAlunosInternos();
+                //alunosSincronizador.sincronizaAlunosInternos();
             }
         });
 
@@ -80,7 +80,7 @@ public class ListaAlunosActivity extends AppCompatActivity {
         registerForContextMenu(this.listView);
 
         alunosSincronizador.buscaTodos();
-        alunosSincronizador.sincronizaAlunosInternos();
+        //alunosSincronizador.sincronizaAlunosInternos();
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

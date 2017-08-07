@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.Map;
 
 import br.comm.a4kontrol.ponto.R;
+import br.comm.a4kontrol.ponto.dao.AbstractDAO;
 import br.comm.a4kontrol.ponto.dao.ConfiguracaoDao;
 import br.comm.a4kontrol.ponto.dao.DAOChain;
 import br.comm.a4kontrol.ponto.dao.FeriadoDao;
@@ -38,7 +39,7 @@ public class RelatorioActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        //super.onCreate(savedInstanceState);
+        super.onCreate(savedInstanceState);
         //setContentView(R.layout.activity_relatorio);
         horasACumprir = (TextView) findViewById(R.id.relatorio_horas_a_cumprir);
         horasCumpridas = (TextView) findViewById(R.id.relatorio_horas_cumpridas);
@@ -46,9 +47,32 @@ public class RelatorioActivity extends AppCompatActivity {
         horasUteisMesAtual = (TextView) findViewById(R.id.relatorio_horas_uteis_mes_atual);
         horasUteisPeriodo = (TextView) findViewById(R.id.relatorio_horas_uteis_periodo);
 
+        getDaos();
+
+
+
+
+
+
+
+
+
+        setContentView(R.layout.activity_relatorio);
+
+
+
 
 
     }
 
+
+    private void getDaos(){
+        try {
+            feriadoDao = (FeriadoDao) DAOChain.getDAO(Feriado.class);
+            lancamentoDao = (LancamentoDao) DAOChain.getDAO(Lancamento.class);
+        } catch (DAOInexistenteException e) {
+            e.printStackTrace();
+        }
+    }
 
 }

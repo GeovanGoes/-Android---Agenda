@@ -58,6 +58,7 @@ public class Inicio extends AppCompatActivity {
     private MaterialCalendarView materialCalendarView;
 
     private List<Lancamento> lancamentosList;
+    private Button relatorios;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,7 +69,7 @@ public class Inicio extends AppCompatActivity {
 
         configureDao();
 
-        MassaDeDados.insereVariosLancamentosParaTesteCaralho(lancamentosDao);
+        //MassaDeDados.insereVariosLancamentosParaTesteCaralho(lancamentosDao);
 
         findViews();
 
@@ -101,6 +102,17 @@ public class Inicio extends AppCompatActivity {
         setActionsFloatingButtons();
         setActionsCalendar();
         setActionsCheckbox();
+        setActionsButtons();
+    }
+
+    private void setActionsButtons() {
+        relatorios.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent relatorioIntent = new Intent(Inicio.this, RelatorioActivity.class);
+                startActivity(relatorioIntent);
+            }
+        });
     }
 
     public void alterarEstadoDaView(CalendarDay day){
@@ -134,6 +146,7 @@ public class Inicio extends AppCompatActivity {
         floatingActionsMenu = (FloatingActionsMenu) findViewById(R.id.floating_menu);
         marcacaoInstantanea = (FloatingActionButton) findViewById(R.id.marcacao_instantanea);
         selecionarHorario = (FloatingActionButton) findViewById(R.id.selecionar_horario);
+        relatorios = (Button) findViewById(R.id.buttonRelatorios);
     }
 
     /**

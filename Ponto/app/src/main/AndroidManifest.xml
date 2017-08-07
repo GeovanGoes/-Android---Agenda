@@ -21,7 +21,8 @@
         <activity
             android:name=".activities.Configuracoes"
             android:label="@string/configuracoes" />
-        <activity android:name=".activities.RelatorioActivity"></activity>
+        <activity
+            android:name=".activities.RelatorioActivity"/>
     </application>
 
 </manifest>

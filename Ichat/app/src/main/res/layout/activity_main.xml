@@ -8,7 +8,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.example.geovan.ichat.Activity.MainActivity">
+    tools:context="com.example.geovan.ichat.activity.MainActivity">
 
     <ListView
         android:id="@+id/lv_mensagens"
@@ -25,11 +25,13 @@
             android:layout_height="50dp" />
 
         <EditText
+            android:id="@+id/campo_mensagem"
             android:layout_weight="2"
             android:layout_width="0dp"
             android:layout_height="wrap_content" />
 
         <Button
+            android:id="@+id/botao_enviar"
             android:text="Enviar"
             android:layout_weight="1"
             android:layout_width="0dp"

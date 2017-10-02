@@ -6,21 +6,21 @@ package com.example.geovan.ichat.modelo;
 public class Mensagem
 {
 
-    private String texto;
-    private int id;
+    private String text;
+    private Integer id;
 
-    public Mensagem(String texto, int id)
+    public Mensagem(String text, Integer id)
     {
-        this.texto = texto;
+        this.text = text;
         this.id = id;
     }
 
-    public String getTexto()
+    public String getText()
     {
-        return texto;
+        return text;
     }
 
-    public int getId()
+    public Integer getId()
     {
         return id;
     }

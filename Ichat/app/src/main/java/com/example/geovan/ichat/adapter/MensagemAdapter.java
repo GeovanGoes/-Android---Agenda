@@ -37,12 +37,14 @@ public class MensagemAdapter extends BaseAdapter
     }
 
     @Override
-    public Mensagem getItem(int position) {
+    public Mensagem getItem(int position)
+    {
         return mensagens.get(position);
     }
 
     @Override
-    public long getItemId(int position) {
+    public long getItemId(int position)
+    {
         return position;
     }
 
@@ -58,7 +60,7 @@ public class MensagemAdapter extends BaseAdapter
             linha.setBackgroundColor(Color.CYAN);
         }
 
-        textView.setText(mensagem.getTexto());
+        textView.setText(mensagem.getText());
 
         return linha;
     }

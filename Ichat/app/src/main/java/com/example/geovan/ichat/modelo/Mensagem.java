@@ -1,13 +1,16 @@
 package com.example.geovan.ichat.modelo;
 
+import java.io.Serializable;
+
 /**
  * Created by geovan on 06/08/17.
  */
-public class Mensagem
+public class Mensagem implements Serializable
 {
 
     private String text;
-    private Integer id;
+
+    private int id;
 
     public Mensagem(String text, Integer id)
     {

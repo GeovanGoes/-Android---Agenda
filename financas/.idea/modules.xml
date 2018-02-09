@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://C:\_personalFiles\Android\financas\Financas.iml" filepath="C:\_personalFiles\Android\financas\Financas.iml" />
+      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://C:\_personalFiles\Android\financas\app\app.iml" filepath="C:\_personalFiles\Android\financas\app\app.iml" />
+      <module fileurl="file://C:\_personalFiles\Android\financas\ficancas.iml" filepath="C:\_personalFiles\Android\financas\ficancas.iml" />
+      <module fileurl="file://$PROJECT_DIR$/financas.iml" filepath="$PROJECT_DIR$/financas.iml" />
+      <module fileurl="file://C:\_personalFiles\Android\financas\financas.iml" filepath="C:\_personalFiles\Android\financas\financas.iml" />
+    </modules>
+  </component>
+</project>

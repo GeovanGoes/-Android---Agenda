@@ -6,11 +6,14 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.geovangoes.materialstudy.R;
 import com.example.geovangoes.materialstudy.dao.NotaDAO;
+import com.example.geovangoes.materialstudy.expandable.MainActivity;
 import com.example.geovangoes.materialstudy.model.Nota;
 import com.example.geovangoes.materialstudy.ui.recycler.adapter.ListaNotasAdapter;
 import com.example.geovangoes.materialstudy.ui.recycler.helper.callback.NotaItemTouchHelperCallback;
@@ -163,5 +166,19 @@ public class ListaNotasActivity extends AppCompatActivity
     private boolean ehCodigoRequisicaoInsereNota(int requestCode)
     {
         return requestCode == CODIGO_REQUISICAO_INSERE_NOTA;
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu)
+    {
+        getMenuInflater().inflate(R.menu.menu_expandable_recycleview, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item)
+    {
+        startActivity(new Intent(ListaNotasActivity.this, MainActivity.class));
+        return super.onOptionsItemSelected(item);
     }
 }

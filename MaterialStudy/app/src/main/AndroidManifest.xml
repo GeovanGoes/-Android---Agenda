@@ -16,7 +16,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.activity.FormularioNotaActivity"></activity>
+        <activity android:name=".ui.activity.FormularioNotaActivity" />
+        <activity android:name=".ui.activity.ExpandableListActivity"></activity>
+        <activity android:name=".expandable.MainActivity"></activity>
     </application>
 
 </manifest>

@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">MaterialStudy</string>
+    <string name="collapsed">collapsed: %s</string>
+    <string name="expanded">expanded: %s</string>
 </resources>

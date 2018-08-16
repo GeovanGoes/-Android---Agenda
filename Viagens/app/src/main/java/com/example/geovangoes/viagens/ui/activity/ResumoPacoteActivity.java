@@ -1,6 +1,7 @@
 package com.example.geovangoes.viagens.ui.activity;
 
 import android.content.Intent;
+import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -12,8 +13,7 @@ import com.example.geovangoes.viagens.model.Pacote;
 import com.example.geovangoes.viagens.util.DiasUtil;
 import com.example.geovangoes.viagens.util.MoedaUtil;
 import com.example.geovangoes.viagens.util.ResourcesUtil;
-
-import java.math.BigDecimal;
+import static com.example.geovangoes.viagens.ui.activity.ActivityConstants.KEY_PACOTE;
 import java.util.Calendar;
 
 public class ResumoPacoteActivity extends AppCompatActivity
@@ -29,13 +29,11 @@ public class ResumoPacoteActivity extends AppCompatActivity
 
         setTitle(TITULO_APPBAR);
 
-        Intent dadosRecebidos = getIntent();
-        if (dadosRecebidos.hasExtra("pacote"))
-        {
-            Pacote pacote = (Pacote) dadosRecebidos.getSerializableExtra("pacote");
-            int position = dadosRecebidos.getIntExtra("position", -1);
+        Bundle extras = getIntent().getExtras();
+        Pacote pacote = extras.getParcelable(KEY_PACOTE);
+
+        if (pacote != null)
             bind(pacote);
-        }
     }
 
     /***
@@ -49,6 +47,19 @@ public class ResumoPacoteActivity extends AppCompatActivity
         mostraDias(pacote);
         mostraData(pacote);
         mostraPreco(pacote);
+        configurarBotaoRealizarPagamento(pacote);
+    }
+
+    private void configurarBotaoRealizarPagamento(Pacote pacote)
+    {
+        findViewById(R.id.resumo_pacote_botao_realiza_pagamento).setOnClickListener((view) -> vaiParaPagamento(pacote));
+    }
+
+    private void vaiParaPagamento(Pacote pacote)
+    {
+        Intent irParaPagamento = new Intent(ResumoPacoteActivity.this, PagamentoActivity.class);
+        irParaPagamento.putExtra(KEY_PACOTE, pacote);
+        startActivity(irParaPagamento);
     }
 
     private void mostraPreco(Pacote pacote)
@@ -82,7 +93,7 @@ public class ResumoPacoteActivity extends AppCompatActivity
     }
 
     @NonNull
-    private String getPeriodoDoPacoteFormatado(int dias)
+    public static String getPeriodoDoPacoteFormatado(int dias)
     {
         Calendar calHoje = Calendar.getInstance();
         String hoje = DiasUtil.formatarData(calHoje);

@@ -2,7 +2,6 @@ package com.example.geovangoes.viagens.util;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
 
 /**
  * Created by geovangoes

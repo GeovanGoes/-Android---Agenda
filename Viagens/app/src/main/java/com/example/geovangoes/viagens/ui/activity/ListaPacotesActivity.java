@@ -1,11 +1,9 @@
 package com.example.geovangoes.viagens.ui.activity;
 
 import android.content.Intent;
-import android.support.annotation.NonNull;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
-import android.view.MotionEvent;
 
 import com.example.geovangoes.viagens.R;
 import com.example.geovangoes.viagens.dao.PacoteDAO;
@@ -13,7 +11,7 @@ import com.example.geovangoes.viagens.model.Pacote;
 import com.example.geovangoes.viagens.ui.adapter.ListaPacotesAdapter;
 import com.example.geovangoes.viagens.ui.callback.OnItemPacoteClick;
 
-import java.math.BigDecimal;
+import static com.example.geovangoes.viagens.ui.activity.ActivityConstants.KEY_PACOTE;
 
 public class ListaPacotesActivity extends AppCompatActivity implements OnItemPacoteClick
 {
@@ -39,9 +37,13 @@ public class ListaPacotesActivity extends AppCompatActivity implements OnItemPac
     @Override
     public void click(Pacote pacote, int position)
     {
+        vaiParaResumoDoPacote(pacote);
+    }
+
+    private void vaiParaResumoDoPacote(Pacote pacote)
+    {
         Intent intent = new Intent(ListaPacotesActivity.this, ResumoPacoteActivity.class);
-        intent.putExtra("pacote", pacote);
-        intent.putExtra("position", position);
+        intent.putExtra(KEY_PACOTE, pacote);
         startActivity(intent);
     }
 }

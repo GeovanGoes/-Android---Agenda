@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import com.example.geovangoes.viagens.R;
 import com.example.geovangoes.viagens.model.Pacote;
+import com.example.geovangoes.viagens.ui.callback.OnItemPacoteClick;
 import com.example.geovangoes.viagens.util.DiasUtil;
 import com.example.geovangoes.viagens.util.MoedaUtil;
 import com.example.geovangoes.viagens.util.ResourcesUtil;
@@ -27,11 +28,13 @@ public class ListaPacotesAdapter extends RecyclerView.Adapter<PacoteViewHolder>
 
     private List<Pacote> pacotes;
     private final Context context;
+    private OnItemPacoteClick onItemPacoteClick;
 
-    public ListaPacotesAdapter(List<Pacote> pacotes, Context context)
+    public ListaPacotesAdapter(List<Pacote> pacotes, Context context, OnItemPacoteClick onItemPacoteClick)
     {
         this.pacotes = pacotes;
         this.context = context;
+        this.onItemPacoteClick = onItemPacoteClick;
     }
 
     @NonNull
@@ -45,7 +48,7 @@ public class ListaPacotesAdapter extends RecyclerView.Adapter<PacoteViewHolder>
     public void onBindViewHolder(@NonNull PacoteViewHolder pacoteViewHolder, int i)
     {
         if (pacotes != null && pacotes.size() > 0)
-            pacoteViewHolder.bind(pacotes.get(i), context);
+            pacoteViewHolder.bind(pacotes.get(i), context, onItemPacoteClick);
     }
 
     @Override
@@ -71,12 +74,13 @@ class PacoteViewHolder extends  RecyclerView.ViewHolder
         preco = itemView.findViewById(R.id.item_pacote_preco);
     }
 
-    public void bind(Pacote pacote, Context context)
+    public void bind(final Pacote pacote, Context context, OnItemPacoteClick onItemPacoteClick)
     {
         setImagem(pacote, context);
         setLocal(pacote);
         setDias(pacote);
         setPreco(pacote);
+        itemView.setOnClickListener((view) -> onItemPacoteClick.click(pacote, getAdapterPosition()));
     }
 
     private void setPreco(Pacote pacote)

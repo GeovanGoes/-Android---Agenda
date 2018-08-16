@@ -1,11 +1,12 @@
 package com.example.geovangoes.viagens.model;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 
 /**
  * Created by geovangoes
  */
-public class Pacote
+public class Pacote implements Serializable
 {
     private final String local;
     private final String imagem;

@@ -3,9 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".ui.activity.ResumoPacoteActivity">
-
+    android:layout_height="match_parent">
 
     <ImageView
         android:id="@+id/resumo_pacote_imagem"
@@ -17,15 +15,13 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0"
-        app:srcCompat="@drawable/sao_paulo_sp" />
+        tools:src="@drawable/sao_paulo_sp"/>
 
     <TextView
         android:id="@+id/resumo_pacote_local"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_margin="8dp"
         android:textSize="24sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
@@ -44,23 +40,25 @@
 
     <TextView
         android:id="@+id/resumo_pacote_data"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
+        app:layout_constraintEnd_toStartOf="@id/resumo_pacote_preco"
         app:layout_constraintStart_toStartOf="@+id/resumo_pacote_dias"
         app:layout_constraintTop_toBottomOf="@+id/resumo_pacote_dias"
-        tools:text="08/12 - 10/12 de 2017" />
+        tools:text="08 de Dezembro até 10 de Dezembro de 2017" />
 
     <TextView
         android:id="@+id/resumo_pacote_preco"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
         android:textColor="@android:color/holo_green_dark"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="@+id/resumo_pacote_data"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/resumo_pacote_data"
         tools:text="R$ 243,99" />
 
     <TextView
@@ -81,9 +79,11 @@
         android:layout_marginTop="8dp"
         android:background="@drawable/botao_redondo_laranja"
         android:text="Realizar Pagamento"
+        android:textColor="@android:color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/resumo_pacote_imagem"
         app:layout_constraintVertical_bias="1.0" />
+
 </android.support.constraint.ConstraintLayout>
